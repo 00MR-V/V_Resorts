@@ -63,7 +63,7 @@ $show_search_box = isset($show_search_box) ? $show_search_box : true; // Default
                 <div class="logIn" style="font-size: 20px;">
                     <?php if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true): ?>
                         <!-- Admin user: clickable link -->
-                        <a href="/WEBSITE%20REVAMPED/Pages/AdminPage/AdminPage.php" style="color: white; text-decoration: none;">
+                        <a href="/WEBSITE REVAMPED/Pages/AdminPage/AdminPage.php" style="color: white; text-decoration: none;">
                             <?php echo htmlspecialchars($_SESSION['username']); ?>
                         </a>
                     <?php else: ?>

@@ -28,7 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['username'] = $adminn['Username'];
 
         // Redirect to the admin page
-        header("Location: /WEBSITE REVAMPED/Pages/AdminPage/AdminPage.php");
+        header("Location: /V_Resorts/WEBSITE%20REVAMPED/Pages/AdminPage/AdminPage.php");
+
 
 
         exit;
