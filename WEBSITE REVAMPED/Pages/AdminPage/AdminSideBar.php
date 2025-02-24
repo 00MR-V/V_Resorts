@@ -16,11 +16,11 @@ if (!isset($_SESSION['admin_logged_in'])) {
         <h2>Welcome, <?php echo $_SESSION['admin_name']; ?></h2>
     </div>
     <ul class="nav-list">
-        <li><a href="/WEBSITE REVAMPED/Pages/AdminPage/AdminPage.php">Dashboard</a></li>
-        <li><a href="/WEBSITE REVAMPED/Pages/AdminPage/AdminManageProperties/AdminManageProperties.php">Manage Properties</a></li>
+        <li><a href="/V_Resorts/WEBSITE%20REVAMPED/Pages/AdminPage/AdminPage.php">Dashboard</a></li>
+        <li><a href="/V_Resorts/WEBSITE REVAMPED/Pages/AdminPage/AdminManageProperties/AdminManageProperties.php">Manage Properties</a></li>
         <li><a href="#">Manage Bookings</a></li>
         <li><a href="#">Manage Users</a></li>
         <li><a href="#">Analytics</a></li>
-        <li><a href="../HomePage/HomePage.php">Back to User Home Page</a></li>
+        <li><a href="/V_Resorts/WEBSITE%20REVAMPED/Pages/HomePage/HomePage.php">Back to User Home Page</a></li>
     </ul>
 </div>

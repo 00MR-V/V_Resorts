@@ -64,7 +64,7 @@ $current_page = basename($_SERVER['PHP_SELF']); ?>
                 <li>
                     <?php if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true): ?>
                         <!-- Admin Link -->
-                        <a href="/WEBSITE%20REVAMPED/Pages/AdminPage/AdminPage.php" id="managePropertyBtn">
+                        <a href="/V_Resorts/WEBSITE%20REVAMPED/Pages/AdminPage/AdminPage.php" id="managePropertyBtn">
                             MANAGE YOUR PROPERTY
                         </a>
                     <?php else: ?>

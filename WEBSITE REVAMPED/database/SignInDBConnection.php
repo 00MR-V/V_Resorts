@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // }
 
             // Redirect to a dashboard or homepage
-            header("Location: /WEBSITE REVAMPED/Pages/HomePage/HomePage.php");
+            header("Location: /V_Resorts/WEBSITE%20REVAMPED/Pages/HomePage/HomePage.php");
 
             exit;
         } else {
