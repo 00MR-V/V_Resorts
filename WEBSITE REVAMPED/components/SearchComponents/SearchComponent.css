@@ -1,0 +1,86 @@
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: #efefef;
+    border-radius: 30px;
+    padding: 10px 20px;
+    padding-right: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 55px; /* Keeps the height fixed */
+    width: 1000px; /* Keeps the width fixed */
+}
+
+.search-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 10px; /* Space between search items */
+    flex: 1; /* Ensure all search items take equal space */
+}
+
+.search-item label {
+    font-size: 14px; /* Increased font size */
+    color: #555;
+    margin-bottom: 5px; /* Slightly increased spacing for better alignment */
+    text-align: left;
+}
+
+.search-item input {
+    border: none;
+    background: none;
+    font-size: 16px; /* Increased font size */
+    color: #000;
+    outline: none;
+    width: 100%; /* Ensures input takes full width */
+}
+
+.search-item input::placeholder {
+    color: #aaa;
+    font-size: 14px; /* Increased placeholder font size */
+}
+
+.divider {
+    width: 1px;
+    height: 40px; /* Fits neatly in the 55px box */
+    background-color: #ddd;
+}
+
+.search-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 0;
+    cursor: pointer;
+    margin-left: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 70px; /* Increased button height */
+    width: 125px;
+    font-size: 16px;
+}
+
+.search-button:hover {
+    background-color: #e0e0e0;
+}
+
+.search-button img {
+    width: 22px;
+    height: 22px;
+    margin-right: 8px; /* Slightly increased margin for better spacing */
+    color: #3F51B5;
+}
+
+.search-button span {
+    font-size: 16px; /* Increased font size */
+    color: #555;
+}

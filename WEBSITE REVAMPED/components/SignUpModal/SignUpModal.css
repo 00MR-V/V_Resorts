@@ -1,0 +1,133 @@
+
+#signUpModal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    
+}
+
+.signUpFormContainer {
+    position: relative;
+    background-color: #FAF9F6;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    padding-top: 10px;
+    padding-bottom: 20px;
+    max-width: 600px;
+    border-radius: 15px;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center; 
+
+}
+
+
+.signUpCloseButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.signUpCloseButton:hover {
+    color: #f00;
+}
+
+
+.signUpGrayLineTop {
+    border-top: 1px solid rgba(160, 160, 160, 0.6); 
+    width: 100%; 
+   
+}
+
+
+.inputGroup {
+    margin-bottom: 15px;
+}
+
+.inputGroupTwo {
+    display: flex;
+    gap: 50px;
+    margin-bottom: 15px;
+}
+
+.inputItem {
+    flex: 1;
+}
+
+.inputGroup input,
+.inputItem input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+
+.signUpButton {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.signUpButton:hover {
+    background-color: #218838;
+}
+
+
+.signUpOverlay {
+    display: none;
+    position: fixed;
+    inset: 0; 
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.signUpOverlay:target {
+    display: flex;
+}   
+
+
+.signUpGrayLineBottomWithOr {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0; 
+}
+
+.signUpGrayLineBottomWithOr::before,
+.signUpGrayLineBottomWithOr::after {
+    content: '';
+    flex: 1; 
+    height: 1px;
+    background-color: rgba(160, 160, 160, 0.6);
+}
+
+.signUpGrayLineBottomWithOr span {
+    margin: 0 10px;
+    font-size: 14px;
+    color: rgba(160, 160, 160, 0.6);
+}

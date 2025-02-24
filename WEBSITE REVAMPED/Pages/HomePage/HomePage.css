@@ -1,0 +1,78 @@
+body {
+    background-color: #FAF9F6;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.background-container {
+    position: relative; 
+    width: 100%;
+    height: 750px; 
+    overflow: hidden;
+  
+}
+
+.background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+
+.backgoundImageText1, .backgoundImageText2, .exploreButton {
+    position: absolute;
+    color: white;
+    text-align: center;
+    z-index: 2; 
+}
+
+.backgoundImageText1 {
+    color: white;
+    font-size: 62px;
+    top: 34%; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+}
+
+.backgoundImageText2 {
+    color: white;
+    font-size: 32px;
+    top: 47%; 
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    white-space: nowrap;
+    width: 100%; 
+}
+
+.exploreButton {
+    font-size: 20px;
+    top: 57%; 
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 25px;
+    background-color: #3F51B5; 
+    border-radius: 10px; 
+    font-family: Arial, sans-serif;
+}
+
+.exploreButton a {
+    color: white;
+    text-decoration: none; 
+    font-size: 32px;
+    font-weight: bold;
+}
+
+
+.exploreButton:hover {
+    background-color: #364598; 
+    text-decoration: underline; 
+    transition: background-color 0.2s ease, transform 0.2s ease; 
+}
+
+
+

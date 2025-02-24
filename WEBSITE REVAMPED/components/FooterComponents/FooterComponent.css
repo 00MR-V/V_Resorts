@@ -1,0 +1,215 @@
+
+footer {
+    background-color: #3F51B5;
+    color: white;
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-evenly;
+    align-items: center;
+    height: 450px;
+    width: 100%;
+}
+
+.newsletterContainer {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    padding: 10px; 
+    text-align: center;
+}
+
+.newsletterText {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 20px; 
+    font-family: Arial, sans-serif; 
+}
+
+.newsletterBox {
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+}
+
+.newsletterBox1 {
+    display: flex;
+    align-items: center; 
+    gap: 5px;  
+    padding: 3px;
+    border-radius: 15px; 
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 2px solid white; 
+    border-right: 0;
+    width: 201px;
+    height: 37px;
+   
+}
+
+#newsletterEmailIcon {
+    width: 27px; 
+    height: 22px;
+}
+
+#newsletterEmailInput {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: white;
+    background-color: transparent;
+    padding: 0px;
+    width: 170px;
+    height: 37px;
+}
+
+#newsletterEmailInput::placeholder {
+    color: white;
+    border: 0;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+.newsletterBox2 {
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0; 
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid white; 
+    border-radius: 15px; 
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s; 
+    width: 129px;
+    height: 43px; 
+}
+
+.newsletterBox2:hover {
+    background-color: white; 
+    color: #3b59d0; 
+}
+
+.footerList{
+    color: white;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.logoContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border-width: 1px;
+}
+
+.logoImage img {
+    height: 44px;
+    width: 46px;
+}
+
+.companyName {
+    font-size: 40px;
+    font-family: Arial, sans-serif;
+    font-weight: normal; 
+    
+}
+
+ul.footerList {
+    display: flex;
+    gap: 60px;
+}
+
+ul.footerList li {
+    list-style-type: none;
+}
+
+ul.footerList li a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    font-weight: normal; 
+}
+
+ul.footerList li:hover {
+    background-color: #4A5DAA; 
+    color: white; 
+    transform: scale(1.05); 
+    transition: all 0.2s ease; 
+    text-decoration: underline;
+}
+
+.whiteLine {
+    width: 1227px; 
+    height: 2px; 
+    background-color: white; 
+
+}
+
+.footerLastLine{
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    gap: 290px;
+}
+
+.languageSelector {
+    margin: 20px;
+    text-align: center;
+}
+
+#languageDropdown {
+    color: white;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #3F51B5; 
+    border: 1px solid white;    
+    border-radius: 5px;     
+    border-radius: 5px;
+    width: 140px;  
+    height: 45px; 
+}
+
+.middleTextInFooterLine{
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    gap: 2px;
+
+}
+
+.middleTextInFooterLine a {
+    color: white;  
+    text-decoration: none;  
+}
+
+.middleTextInFooterLine a:hover {
+    color: #e1e1e1;  
+    text-decoration: underline; 
+    transform: scale(1.05);
+}
+
+.socialIcons{
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    gap: 5px;
+
+}
+
+
+.socialIcons a:hover img {
+    transform: scale(1.2);
+}
+
+

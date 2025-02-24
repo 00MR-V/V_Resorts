@@ -1,0 +1,177 @@
+
+header {
+    background-color: #3F51B5;
+    color: white;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 120px;
+}
+
+.logoContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border-width: 1px;
+}
+
+.logoImage img {
+    height: 44px;
+    width: 46px;
+}
+
+.companyName {
+    font-size: 40px;
+    font-family: Arial, sans-serif;
+    font-weight: normal; 
+    
+}
+
+ul.headerList {
+    padding: 0;
+    width: 600px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+ul.headerList li {
+    list-style-type: none;
+}
+
+ul.headerList li a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    font-weight: normal; 
+}
+
+ul.headerList li:hover {
+    background-color: #4A5DAA; 
+    color: white; 
+    transform: scale(1.05); 
+    transition: all 0.2s ease; 
+    text-decoration: underline;
+}
+
+.searchBox {
+    display: flex;
+    align-items: center;
+    height: 43px;
+}
+
+.searchBox1 {
+    background-color: white;
+    color: #3F51B5;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    width: 224px; /* 274px - 48px */
+    height: 43px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px; /* Add padding for text spacing */
+    font-size: 20px;
+    font-weight: normal;
+    font-family: Arial, sans-serif;
+    border: 2px solid #3F51B5;
+}
+
+.searchBox1 input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    width: 220px; /* 274px - 48px */
+    height: 41px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    border: 0px solid #3F51B5;
+    /* border-left: 0px; */
+    /* border-right: 0px; */
+    outline: none;
+}
+
+.searchBox2 {
+    background-color: white;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    width: 48px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #3F51B5;
+    border-left: 0px;
+}
+
+.searchBox2 img {
+    width: 37px;
+    height: 28px;
+    fill: #3F51B5; 
+    cursor: pointer;
+}
+.userAuth {
+    display: flex;
+    gap: 50px;
+}
+
+.userAuth a {
+    text-decoration: none;
+}
+
+.logIn {
+    padding: 10px 25px;
+    background-color: #6372C3;
+    border-radius: 15px;
+    border: 2px solid white;
+    width: 109px;
+    height: 25px;
+    text-align: center;
+}
+
+.logIn a {
+    color: white;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    font-weight: normal; 
+    
+}
+
+.logIn:hover {
+    background-color: #4A5DAA; 
+    color: white; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+    transform: scale(1.05); 
+    transition: all 0.2s ease; 
+    text-decoration: underline;
+}
+.signUp {
+    padding: 10px 25px;
+    background-color: #6372C3;
+    border-radius: 15px;
+    border: 2px solid white;
+    width: 109px;
+    height: 25px;
+    text-align: center;
+}
+
+.signUp a {
+    color: white;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    font-weight: normal; 
+}
+
+.signUp:hover{
+    background-color: #4A5DAA; 
+    color: white;  
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+    transform: scale(1.05); 
+    transition: all 0.2s ease; 
+    text-decoration: underline;
+}
+

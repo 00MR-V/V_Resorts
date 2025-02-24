@@ -1,0 +1,174 @@
+
+#logInModal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+
+.LogInformContainer {
+    position: relative;
+    background-color: #FAF9F6;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    padding-top: 10px;
+    padding-bottom: 20px;
+    max-width: 500px;
+    border-radius: 15px;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center; 
+}
+
+/* Close button */
+.logInCloseButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.logInCloseButton:hover {
+    color: #f00;
+}
+
+.logInGrayLineTop {
+    border-top: 1px solid rgba(160, 160, 160, 0.6); /* 1px gray line with 60% opacity */
+    width: 100%; /* Adjust as needed */
+    height: 0; /* Ensures it's just a line */
+}
+
+
+
+
+/* Input fields */
+.inputGroup {
+    margin-bottom: 15px;
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Align items vertically */
+    justify-content: space-between; /* Push label and input to opposite ends */
+    gap: 10px; /* Optional: Add spacing between label and input */
+}
+
+.inputGroup label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    flex: 3; /* Allow label to take up space on the left */
+    text-align: left; /* Align text to the left */
+}
+
+.inputGroup input {
+    flex: 4; /* Allow input to take up more space on the right */
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%; /* Ensure it adjusts to available space */
+    max-width: 300px; /* Optional: Limit the input width */
+}
+
+/* Submit button */
+.logInSignInButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.logInSignInButton:hover {
+    background-color: #0056b3;
+}
+
+/* Forgot password link */
+.logInforgotPassword {
+    font-size: 14px;
+    color: #007bff;
+    text-decoration: none;
+    display: block;
+    margin-top: 10px;
+}
+
+.logInforgotPassword:hover {
+    text-decoration: underline;
+}
+
+.logInGrayLineBottomWithOr {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0; 
+}
+
+.logInGrayLineBottomWithOr::before,
+.logInGrayLineBottomWithOr::after {
+    content: '';
+    flex: 1; 
+    height: 1px;
+    background-color: rgba(160, 160, 160, 0.6);
+}
+
+.logInGrayLineBottomWithOr span {
+    margin: 0 10px;
+    font-size: 14px;
+    color: rgba(160, 160, 160, 0.6);
+}
+
+
+.signUpSection {
+    margin-top: -17px;
+    text-align: center;
+}
+
+.signUpSection p {
+    font-size: 14px;
+    color: #777;
+}
+
+.logInGetStartedButton{
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.logInGetStartedButton:hover {
+    background-color: #218838;
+}
+
+.logInoverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+  
+  .logInoverlay:target {
+    display: flex;
+  }
+
+  
