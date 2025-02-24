@@ -27,18 +27,18 @@ $(document).ready(function() {
             return;
         }
 
-        let formData = new FormData(this); // Use FormData for flexibility
+        let formData = new FormData(this);
 
         $.ajax({
             url: "AdminSaveProperty.php",
             type: "POST",
             data: formData,
-            processData: false, // Important for file uploads
-            contentType: false, // Important for file uploads
+            processData: false,
+            contentType: false,
             success: function(response) {
                 alert(response);
                 $("#propertyModal").addClass("hidden");
-                fetchProperties(); // Refresh properties list dynamically
+                fetchProperties();
             },
             error: function() {
                 alert("An error occurred while saving the property.");
@@ -87,7 +87,7 @@ $(document).ready(function() {
                 data: { propertyId: propertyId },
                 success: function(response) {
                     alert(response);
-                    fetchProperties(); // Refresh properties list dynamically
+                    fetchProperties();
                 },
                 error: function() {
                     alert("An error occurred while deleting the property.");
@@ -96,13 +96,33 @@ $(document).ready(function() {
         }
     });
 
-    // Function to fetch and refresh properties dynamically
+    // Read More premium modal
+    $(document).on('click', '.read-more', function(e) {
+        e.preventDefault();
+
+        const fullText = $(this).data('fulltext');
+
+        $('body').append(`
+            <div class="read-more-modal">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <p>${fullText}</p>
+                </div>
+            </div>
+        `);
+
+        $('.close-btn').click(function(){
+            $('.read-more-modal').remove();
+        });
+    });
+
+    // Fetch properties dynamically
     function fetchProperties() {
         $.ajax({
             url: "AdminFetchProperties.php",
             type: "GET",
             success: function(data) {
-                $("tbody").html(data); // Update the table without reloading the page
+                $("tbody").html(data);
             },
             error: function() {
                 alert("An error occurred while fetching the properties.");
