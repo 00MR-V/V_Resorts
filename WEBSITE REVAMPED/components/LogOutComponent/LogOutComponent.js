@@ -1,5 +1,5 @@
 function logOutUser() {
-    fetch('/V_Resorts/components/LogOutComponent/LogOutComponent.php', {
+    fetch('/V_Resorts/WEBSITE%20REVAMPED/Components/LogOutComponent/LogOutComponent.php', {
         method: 'POST',
     })
         .then(response => {
