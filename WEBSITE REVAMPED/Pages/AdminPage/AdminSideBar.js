@@ -3,25 +3,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const navLinks = document.querySelectorAll('.nav-list a');
     const sections = document.querySelectorAll('.content-section');
-
-    // Ensure Dashboard is visible on page load
-    document.getElementById('dashboard').classList.add('active');
+    
+    // Ensure Dashboard is visible on page load only if it exists
+    const dashboardSection = document.getElementById('dashboard');
+    if (dashboardSection) {
+        dashboardSection.classList.add('active');
+    } else {
+        console.warn("Warning: #dashboard section not found on this page.");
+    }
 
     navLinks.forEach(link => {
         link.addEventListener('click', function (e) {
             e.preventDefault();
 
-            // Check if it's an external page (e.g., Manage Properties)
-            if (this.href.includes("AdminManageProperties.php")) {
-                window.location.href = this.href;
+            // Handle external pages
+            const targetHref = this.getAttribute('href');
+            if (targetHref.includes(".php") && !targetHref.includes("#")) {
+                window.location.href = targetHref; // Redirect to external page
                 return;
             }
 
+            // Handle internal navigation
             const sectionId = this.getAttribute('data-section');
-            const activeSection = document.getElementById(sectionId);
+            if (!sectionId) {
+                console.warn("Warning: data-section attribute missing on link.");
+                return;
+            }
 
+            const activeSection = document.getElementById(sectionId);
             if (!activeSection) {
-                console.log("Error: Section not found!");
+                console.warn(`Warning: Section ${sectionId} not found.`);
                 return;
             }
 

@@ -21,9 +21,10 @@ h1 {
     font-weight: 600;
 }
 
+/* ========== Buttons ========== */
 button {
     border: none;
-    padding: 10px 20px;
+    padding: 12px 25px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
@@ -35,100 +36,94 @@ button:hover {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* ========== Card Design ========== */
-.property-card {
-    background: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
-    padding: 20px;
-    margin-bottom: 30px;
-    transition: transform 0.3s ease;
+/* Updated: 'Add New Property' Button */
+#addPropertyBtn {
+    background-color: #228B22;
+    color: #fff;
+    font-size: 1.2rem;
+    padding: 15px 30px;
+    margin-bottom: 25px;
+    display: inline-block;
 }
 
-.property-card:hover {
-    transform: translateY(-5px);
-}
-
-.property-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.property-image {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 15px;
-}
-
-.property-details {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    font-size: 0.95rem;
-}
-
-.detail {
-    flex: 1;
-    min-width: 150px;
-}
-
-.detail strong {
-    display: block;
-    color: #777;
-    margin-bottom: 5px;
-}
-
-.property-actions {
-    margin-top: 20px;
-    display: flex;
-    gap: 15px;
-}
-
+/* Restore Original Colors for Edit & Delete Buttons */
 .editBtn {
-    background-color: #ffcc00;
+    background-color: #ffcc00; /* Restored to Yellow */
     color: #fff;
 }
 
 .deleteBtn {
-    background-color: #ff4d4f;
+    background-color: #ff4d4f; /* Restored to Red */
     color: #fff;
 }
 
-.addPropertyBtn {
-    background-color: #5b8c00;
-    color: #fff;
-    margin-bottom: 25px;
+/* ========== Table Styling ========== */
+.table-container {
+    overflow-x: auto;
 }
 
-/* Premium Modal CSS */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+table thead {
+    background-color: #ddd;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+/* ========== Read More Modal ========== */
 .read-more-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 600px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Fix White Box Issue */
+.read-more-modal p {
+    text-align: justify;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #444;
+    padding: 10px;
+    margin: 0;
+    background: transparent !important; /* Fix white box issue */
+    box-shadow: none !important;
+}
+
+/* Read More Modal Overlay */
+.read-more-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
     z-index: 9999;
 }
 
-.modal-content {
-    background: #fff;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    max-width: 600px;
-    width: 90%;
-    position: relative;
-}
-
-.close-btn {
+/* Close Button */
+.read-more-modal .close-btn {
     position: absolute;
     top: 10px;
     right: 15px;
@@ -137,98 +132,155 @@ button:hover {
     color: #333;
 }
 
-
-/* ========== Form Styling (Modal) ========== */
+/* ========== Modal Styling ========== */
 .modal {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #ffffff;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    border-radius: 12px;
-    width: 95%;
-    max-width: 900px;
-    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
 }
 
 .modal.hidden {
     display: none;
 }
 
-form {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+.modal-content {
+    background-color: #fff;
+    width: 90%;
+    max-width: 800px;
+    padding: 30px;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: left;
+}
+
+/* Close Button */
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #999;
+}
+
+.close-button:hover {
+    color: #333;
+}
+
+/* ========== Form Layout (2 Columns) ========== */
+#propertyForm {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     gap: 15px;
 }
 
-label {
-    font-weight: 500;
-    color: #666;
+/* Form Groups: Two Columns */
+.form-group {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
 }
 
-input, select, textarea {
+.form-group.full-width {
     width: 100%;
-    padding: 8px;
-    margin-top: 6px;
+}
+
+/* Labels */
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Inputs, Textareas, and Selects */
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="file"],
+.form-group select,
+.form-group textarea {
     border: 1px solid #ddd;
     border-radius: 6px;
-    font-size: 0.9rem;
-    transition: border-color 0.2s ease;
+    padding: 10px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    font-family: 'Poppins', sans-serif;
 }
 
-input:focus, textarea:focus, select:focus {
-    outline: none;
-    border-color: #5b8c00;
-    box-shadow: 0 0 0 3px rgba(91,140,0,0.1);
-}
-
-textarea {
+.form-group textarea {
     resize: vertical;
-    min-height: 70px;
+    min-height: 80px;
 }
 
-input[type="file"] {
-    border: none;
-    padding-left: 0;
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #228B22;
+    box-shadow: 0 0 0 2px rgba(34, 139, 34, 0.2);
 }
 
-.full-width {
-    grid-column: span 4;
-}
-
-.modal-buttons {
-    grid-column: span 4;
+/* ========== Form Actions (Buttons) ========== */
+.form-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 20px;
+    width: 100%;
 }
 
-/* ========== Responsive Layout ========== */
-@media (max-width: 1024px) {
-    form {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .full-width, .modal-buttons {
-        grid-column: span 2;
-    }
+/* ========== Save Button ========== */
+.save-button {
+    background-color: #228B22; /* Forest Green */
+    color: #fff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-@media (max-width: 767px) {
-    .main-content {
-        margin-left: 0;
+.save-button:hover {
+    background-color: #228B22 !important; /* Keep the same green */
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Cancel Button */
+.cancel-button {
+    background-color: #ff4d4f;
+    color: #fff;
+}
+
+.cancel-button:hover {
+    background-color: #d9363e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* ========== Responsive Adjustments ========== */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        max-width: 95%;
+        padding: 20px;
+    }
+
+    /* Stack Inputs on Smaller Screens */
+    .form-group {
         width: 100%;
-        padding: 15px;
     }
 
-    form {
-        grid-template-columns: 1fr;
-    }
-
-    .full-width, .modal-buttons {
-        grid-column: span 1;
+    /* Make Read More Modal Responsive */
+    .read-more-modal {
+        width: 90%;
+        max-width: 90%;
     }
 }

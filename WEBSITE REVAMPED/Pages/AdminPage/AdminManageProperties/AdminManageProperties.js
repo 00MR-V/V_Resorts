@@ -115,7 +115,10 @@ $(document).ready(function() {
             $('.read-more-modal').remove();
         });
     });
-
+    $("#closeModal, #closeModal2").click(function() {
+        $("#propertyModal").addClass("hidden");
+    });
+    
     // Fetch properties dynamically
     function fetchProperties() {
         $.ajax({
