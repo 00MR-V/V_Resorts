@@ -5,6 +5,9 @@ $propertyId = $_POST['propertyId'];
 
 $sql = "DELETE FROM property WHERE Property_ID = ?";
 $stmt = $pdo->prepare($sql);
-$stmt->execute([$propertyId]);
+if ($stmt->execute([$propertyId])) {
+    echo "Property deleted successfully!";
+} else {
+    echo "❌ Error deleting property.";
+}
 
-echo "Property deleted successfully!";

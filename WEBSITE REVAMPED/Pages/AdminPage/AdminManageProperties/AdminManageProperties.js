@@ -38,11 +38,13 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
+                console.log("✅ Save Property Response:", response);
                 alert(response);
                 $("#propertyModal").addClass("hidden");
                 fetchProperties();
             },
-            error: function () {
+            error: function (xhr, status, error) {
+                console.log("❌ Save Property Error:", xhr.responseText);
                 alert("❌ An error occurred while saving the property.");
             },
         });
@@ -60,7 +62,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: "AdminGetProperty.php", // Adjusted path
+            url: "AdminGetProperty.php",
             type: "POST",
             data: { propertyId: propertyId },
             dataType: "json",
@@ -83,7 +85,7 @@ $(document).ready(function () {
                 $("#modalTitle").text("Edit Property");
             },
             error: function (xhr, status, error) {
-                console.log("❌ AJAX error:", status, error);
+                console.log("❌ AJAX error:", xhr.responseText);
                 alert("❌ An error occurred while fetching property details.");
             },
         });
@@ -99,47 +101,40 @@ $(document).ready(function () {
                 type: "POST",
                 data: { propertyId: propertyId },
                 success: function (response) {
+                    console.log("✅ Delete Property Response:", response);
                     alert(response);
                     fetchProperties();
                 },
-                error: function () {
+                error: function (xhr, status, error) {
+                    console.log("❌ Delete Property Error:", xhr.responseText);
                     alert("❌ An error occurred while deleting the property.");
                 },
             });
         }
     });
 
-    // Read More premium modal
-    $(document).on("click", ".read-more", function (e) {
-        e.preventDefault();
-
-        const fullText = $(this).data("fulltext");
-
-        $("body").append(`
-            <div class="read-more-modal">
-                <div class="modal-content">
-                    <span class="close-btn">&times;</span>
-                    <p>${fullText}</p>
-                </div>
-            </div>
-        `);
-
-        $(".close-btn").click(function () {
-            $(".read-more-modal").remove();
-        });
-    });
-
     // Fetch properties dynamically
     function fetchProperties() {
         $.ajax({
-            url: "AdminFetchProperties.php",
-            type: "GET",
+            url: "AdminGetProperty.php",
+            type: "POST",
+            dataType: "html", // ✅ Expect HTML response
             success: function (data) {
+                console.log("✅ Fetch Properties Response:", data);
+    
+                if (!data.trim()) {
+                    alert("⚠️ No properties found.");
+                    $("tbody").html("<tr><td colspan='8'>No properties found.</td></tr>");
+                    return;
+                }
+    
                 $("tbody").html(data);
             },
-            error: function () {
-                alert("❌ An error occurred while fetching the properties.");
+            error: function (xhr, status, error) {
+                console.log("❌ Fetch Properties Error:", xhr.responseText);
+                alert("❌ Error in fetching properties.");
             },
         });
     }
+    
 });

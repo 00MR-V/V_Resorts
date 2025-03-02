@@ -3,52 +3,104 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require_once "../../../database/VResortsConnection.php"; // Ensure this path is correct
+// Determine response type based on whether a propertyId is provided.
+$propertyId = isset($_POST['propertyId']) ? trim($_POST['propertyId']) : null;
+if ($propertyId) {
+    header("Content-Type: application/json; charset=UTF-8");
+} else {
+    header("Content-Type: text/html; charset=UTF-8");
+}
 
-header("Content-Type: application/json");
-
-// Debug: Check if admin is logged in
+// Ensure admin is logged in.
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(["error" => "Unauthorized access - Admin not logged in"]);
+    if ($propertyId) {
+        echo json_encode(["error" => "Unauthorized access"]);
+    } else {
+        echo "<tr><td colspan='8'>Error: Unauthorized access - Admin not logged in</td></tr>";
+    }
     exit;
 }
-
-// Debug: Check if propertyId is provided
-if (!isset($_POST['propertyId']) || empty($_POST['propertyId'])) {
-    echo json_encode(["error" => "No property ID provided"]);
-    exit;
-}
-
 $admin_id = $_SESSION['user_id'];
-$propertyId = $_POST['propertyId'];
 
+// -------------------[ Database Connection ]-------------------
+$dsn    = "mysql:host=localhost;dbname=v_resorts;charset=utf8";
+$dbUser = "root";
+$dbPass = "";
+$options = [ PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ];
 try {
-    // Debug: Check if database connection is working
-    if (!$pdo) {
-        echo json_encode(["error" => "Database connection failed"]);
+    $pdo = new PDO($dsn, $dbUser, $dbPass, $options);
+} catch (PDOException $ex) {
+    if ($propertyId) {
+        echo json_encode(["error" => "DB Connection Error: " . $ex->getMessage()]);
+    } else {
+        echo "<tr><td colspan='8'>DB Connection Error: " . htmlspecialchars($ex->getMessage()) . "</td></tr>";
+    }
+    exit;
+}
+
+// -------------------[ Single-Property Fetch (JSON response) ]-------------------
+if ($propertyId) {
+    try {
+        // Removed Admin_ID check so older properties can be edited.
+        $sql = "SELECT * FROM property WHERE Property_ID = :propertyId LIMIT 1";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':propertyId', $propertyId, PDO::PARAM_INT);
+        $stmt->execute();
+        $property = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$property) {
+            echo json_encode(["error" => "Property not found"]);
+            exit;
+        }
+
+        // Decode amenities from JSON.
+        $property['Amenities'] = !empty($property['Amenities'])
+            ? json_decode($property['Amenities'], true)
+            : [];
+
+        echo json_encode($property);
+        exit;
+    } catch (PDOException $e) {
+        echo json_encode(["error" => "DB Error: " . $e->getMessage()]);
         exit;
     }
+}
 
-    // Fetch property details only if it belongs to the logged-in admin
-    $query = "SELECT * FROM property WHERE Property_ID = :propertyId AND Admin_ID = :adminId LIMIT 1";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':propertyId', $propertyId, PDO::PARAM_INT);
-    $stmt->bindParam(':adminId', $admin_id, PDO::PARAM_INT);
+// -------------------[ Multi-Property Fetch (HTML table) ]-------------------
+try {
+    // Removed Admin_ID check so all properties are shown.
+    $sql = "SELECT * FROM property";
+    $stmt = $pdo->prepare($sql);
     $stmt->execute();
+    $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $property = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // Debug: Check if query returned any result
-    if (!$property) {
-        echo json_encode(["error" => "Property not found or access denied"]);
+    if (empty($properties)) {
+        echo "<tr><td colspan='8'>No properties found.</td></tr>";
         exit;
     }
 
-    // Convert JSON fields back to readable format
-    $property['Amenities'] = json_decode($property['Amenities'], true);
+    $html = "";
+    foreach ($properties as $row) {
+        $description  = htmlspecialchars(substr($row['Description'], 0, 50)) . "...";
+        $availability = $row['Availability'] ? 'Unavailable' : 'Available';
 
-    // Debug: Check if final output is correct
-    echo json_encode($property);
+        $html .= "<tr>
+                    <td>{$row['Property_ID']}</td>
+                    <td>{$row['Name']}</td>
+                    <td>{$row['Type']}</td>
+                    <td>{$row['Location']}</td>
+                    <td>\${$row['Price']}</td>
+                    <td>{$availability}</td>
+                    <td>{$description}</td>
+                    <td>
+                        <button class='editBtn' data-id='{$row['Property_ID']}'>Edit</button>
+                        <button class='deleteBtn' data-id='{$row['Property_ID']}'>Delete</button>
+                    </td>
+                  </tr>";
+    }
+    echo $html;
+    exit;
 } catch (PDOException $e) {
-    echo json_encode(["error" => "Database error: " . $e->getMessage()]);
+    echo "<tr><td colspan='8'>DB Error: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+    exit;
 }
