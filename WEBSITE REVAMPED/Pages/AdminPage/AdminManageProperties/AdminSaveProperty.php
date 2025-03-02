@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../../database/VResortsConnction.php";
+require_once "../../../database/VResortsConnection.php";
 
 // Ensure admin is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -11,25 +11,33 @@ if (!isset($_SESSION['user_id'])) {
 $admin_id = $_SESSION['user_id']; // Get the logged-in admin's ID
 
 $propertyId = $_POST['propertyId'] ?? null;
-$name = $_POST['propertyName'];
-$type = $_POST['propertyType'];
-$location = $_POST['propertyLocation'];
-$price = $_POST['propertyPrice'];
-$availability = $_POST['propertyAvailability'];
+$name = $_POST['propertyName'] ?? '';
+$type = $_POST['propertyType'] ?? '';
+$location = $_POST['propertyLocation'] ?? '';
+$price = $_POST['propertyPrice'] ?? 0;
+$availability = $_POST['propertyAvailability'] ?? 0;
 $description = $_POST['propertyDescription'] ?? "No description available";
-$big_description = $_POST['bigDescription'] ?? NULL;
-$capacity = $_POST['capacity'] ?? NULL;
+$big_description = $_POST['bigDescription'] ?? null;
+$capacity = $_POST['propertyCapacity'] ?? null;
 
 // Handle amenities - Convert from comma-separated string to JSON array
-$amenities = isset($_POST['propertyAmenities']) ? json_encode(explode(",", $_POST['propertyAmenities'])) : "[]";
+$amenities = isset($_POST['propertyAmenities']) ? json_encode(array_map('trim', explode(",", $_POST['propertyAmenities']))) : "[]";
+
+// Ensure the uploads directory exists
+$upload_dir = "../../uploads/properties/";
+if (!is_dir($upload_dir)) {
+    mkdir($upload_dir, 0777, true);
+}
 
 // Handle property photo upload
 $photo_path = null;
-if (isset($_FILES['propertyPhoto']) && $_FILES['propertyPhoto']['error'] === UPLOAD_ERR_OK) {
+if (!empty($_FILES['propertyPhoto']['name']) && $_FILES['propertyPhoto']['error'] === UPLOAD_ERR_OK) {
     $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
-    if (in_array($_FILES['propertyPhoto']['type'], $allowed_types)) {
-        $upload_dir = "../../uploads/properties/";
-        $photo_path = $upload_dir . basename($_FILES['propertyPhoto']['name']);
+    $file_type = mime_content_type($_FILES['propertyPhoto']['tmp_name']);
+
+    if (in_array($file_type, $allowed_types)) {
+        $photo_filename = time() . "_" . basename($_FILES['propertyPhoto']['name']);
+        $photo_path = $upload_dir . $photo_filename;
         move_uploaded_file($_FILES['propertyPhoto']['tmp_name'], $photo_path);
     } else {
         echo "Error: Invalid image format for property photo.";
@@ -41,9 +49,10 @@ if (isset($_FILES['propertyPhoto']) && $_FILES['propertyPhoto']['error'] === UPL
 $gallery_photos = [];
 if (!empty($_FILES['galleryPhotos']['tmp_name'][0])) {
     foreach ($_FILES['galleryPhotos']['tmp_name'] as $key => $tmp_name) {
-        $file_type = $_FILES['galleryPhotos']['type'][$key];
-        if (in_array($file_type, $allowed_types)) {
-            $gallery_path = $upload_dir . basename($_FILES['galleryPhotos']['name'][$key]);
+        $file_type = mime_content_type($tmp_name);
+        if (in_array($file_type, ['image/jpeg', 'image/png', 'image/webp'])) {
+            $gallery_filename = time() . "_" . basename($_FILES['galleryPhotos']['name'][$key]);
+            $gallery_path = $upload_dir . $gallery_filename;
             move_uploaded_file($tmp_name, $gallery_path);
             $gallery_photos[] = $gallery_path;
         }
@@ -69,4 +78,3 @@ try {
 } catch (PDOException $e) {
     echo "Database Error: " . $e->getMessage();
 }
-?>

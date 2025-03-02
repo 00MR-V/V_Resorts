@@ -1,5 +1,5 @@
 <?php
-require_once "../../database/VResortsConnction.php";
+require_once "../../../database/VResortsConnection.php";
 
 $propertyId = $_POST['propertyId'];
 
@@ -8,4 +8,3 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([$propertyId]);
 
 echo "Property deleted successfully!";
-?>

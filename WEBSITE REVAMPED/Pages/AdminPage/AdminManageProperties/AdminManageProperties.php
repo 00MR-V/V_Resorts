@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../../../database/VResortsConnction.php"; // Database connection file
+require_once "../../../database/VResortsConnection.php"; // Database connection file
 
 // Ensure admin is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -20,23 +20,25 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Properties</title>
-    
+
     <!-- Main CSS for this page -->
     <link rel="stylesheet" href="../AdminManageProperties/AdminManageProperties.css">
-    
+
     <!-- jQuery Library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+
     <!-- Main JS for this page -->
     <script src="../AdminManageProperties/AdminManageProperties.js"></script>
-    
+
     <!-- Include Sidebar CSS -->
     <link rel="stylesheet" href="../AdminSideBar.css">
 </head>
+
 <body>
 
     <!-- Include Sidebar -->
@@ -69,54 +71,54 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </tr>
             </thead>
             <tbody>
-            <?php foreach ($properties as $row) { ?>
-                <tr>
-                    <td><?php echo $row['Property_ID']; ?></td>
-                    <td><?php echo $row['Name']; ?></td>
-                    <td><?php echo $row['Type']; ?></td>
-                    <td><?php echo $row['Location']; ?></td>
-                    <td>$<?php echo $row['Price']; ?></td>
-                    <td><?php echo $row['Availability'] ? 'Unavailable' : 'Available'; ?></td>
-                    <td>
-                        <?php
+                <?php foreach ($properties as $row) { ?>
+                    <tr>
+                        <td><?php echo $row['Property_ID']; ?></td>
+                        <td><?php echo $row['Name']; ?></td>
+                        <td><?php echo $row['Type']; ?></td>
+                        <td><?php echo $row['Location']; ?></td>
+                        <td>$<?php echo $row['Price']; ?></td>
+                        <td><?php echo $row['Availability'] ? 'Unavailable' : 'Available'; ?></td>
+                        <td>
+                            <?php
                             $desc_words = explode(" ", $row['Description']);
                             echo implode(" ", array_slice($desc_words, 0, 10));
                             if (count($desc_words) > 10) {
                                 echo " ... <a href='#' class='read-more' data-fulltext='" . htmlspecialchars($row['Description']) . "'>Read More</a>";
                             }
-                        ?>
-                    </td>
-                    <td>
-                        <?php
+                            ?>
+                        </td>
+                        <td>
+                            <?php
                             $big_desc_words = explode(" ", $row['Big_Description']);
                             echo implode(" ", array_slice($big_desc_words, 0, 10));
                             if (count($big_desc_words) > 10) {
                                 echo " ... <a href='#' class='read-more' data-fulltext='" . htmlspecialchars($row['Big_Description']) . "'>Read More</a>";
                             }
-                        ?>
-                    </td>
-                    <td><?php echo $row['Capacity']; ?></td>
-                    <!-- Decode JSON for Amenities -->
-                    <td>
-                        <?php
+                            ?>
+                        </td>
+                        <td><?php echo $row['Capacity']; ?></td>
+                        <!-- Decode JSON for Amenities -->
+                        <td>
+                            <?php
                             $amenities = json_decode($row['Amenities'], true);
                             echo is_array($amenities) ? implode(", ", $amenities) : "No Amenities Listed";
-                        ?>
-                    </td>
-                    <!-- Display Property Image from BLOB -->
-                    <td>
-                        <?php
+                            ?>
+                        </td>
+                        <!-- Display Property Image from BLOB -->
+                        <td>
+                            <?php
                             if (!empty($row['propertyPhoto'])) {
                                 $base64Image = base64_encode($row['propertyPhoto']);
                                 echo "<img src='data:image/jpeg;base64,$base64Image' width='100' height='100'>";
                             } else {
                                 echo "No Image";
                             }
-                        ?>
-                    </td>
-                    <!-- Display Gallery Images from BLOB -->
-                    <td>
-                        <?php
+                            ?>
+                        </td>
+                        <!-- Display Gallery Images from BLOB -->
+                        <td>
+                            <?php
                             $gallery = json_decode($row['Gallery_Photos'], true);
                             if (!empty($gallery) && is_array($gallery)) {
                                 foreach ($gallery as $photo) {
@@ -126,14 +128,14 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             } else {
                                 echo "No Gallery";
                             }
-                        ?>
-                    </td>
-                    <td>
-                        <button class="editBtn" data-id="<?php echo $row['Property_ID']; ?>">Edit</button>
-                        <button class="deleteBtn" data-id="<?php echo $row['Property_ID']; ?>">Delete</button>
-                    </td>
-                </tr>
-            <?php } ?>
+                            ?>
+                        </td>
+                        <td>
+                            <button class="editBtn" data-id="<?php echo $row['Property_ID']; ?>">Edit</button>
+                            <button class="deleteBtn" data-id="<?php echo $row['Property_ID']; ?>">Delete</button>
+                        </td>
+                    </tr>
+                <?php } ?>
             </tbody>
         </table>
 
@@ -223,4 +225,5 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Include Sidebar JS -->
     <script src="../AdminSideBar.js"></script>
 </body>
+
 </html>

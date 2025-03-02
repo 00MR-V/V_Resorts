@@ -1,5 +1,5 @@
 <?php
-require_once '../database/VResortsConnction.php';
+require_once '../database/VResortsConnection.php';
 header('Content-Type: application/json');
 
 $input = json_decode(file_get_contents('php://input'), true);
@@ -34,4 +34,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['success' => false, 'message' => 'Email not found.']);
     }
 }
-?>

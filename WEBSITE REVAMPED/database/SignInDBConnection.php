@@ -1,7 +1,7 @@
 <?php
 
 // Include the database connection file
-require_once "VResortsConnction.php";
+require_once "VResortsConnection.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];

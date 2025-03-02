@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../database/VResortsConnction.php';
+require_once __DIR__ . '/../../database/VResortsConnection.php';
 
 // Number of properties per container
 $propertiesPerContainer = 7;

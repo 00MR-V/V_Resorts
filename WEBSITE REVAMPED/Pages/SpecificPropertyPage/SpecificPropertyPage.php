@@ -1,5 +1,5 @@
 <?php
-require_once '../../database/VResortsConnction.php';
+require_once '../../database/VResortsConnection.php';
 $show_search_box = false; // Hide search box
 $property_id = isset($_GET['property_id']) ? (int)$_GET['property_id'] : null;
 
@@ -53,14 +53,14 @@ if (!$property) {
     <main class="property-details">
         <!-- Gallery Section -->
         <div class="gallery">
-        <?php
-        if (!empty($property['propertyPhoto'])) {
-            // If propertyPhoto is stored as a binary blob (e.g., in BLOB format in the database)
-            echo "<img src='data:image/jpeg;base64," . base64_encode($property['propertyPhoto']) . "' alt='Property Photo'>";
-        } else {
-            echo "<p>No photos available for this property.</p>";
-        }
-        ?>
+            <?php
+            if (!empty($property['propertyPhoto'])) {
+                // If propertyPhoto is stored as a binary blob (e.g., in BLOB format in the database)
+                echo "<img src='data:image/jpeg;base64," . base64_encode($property['propertyPhoto']) . "' alt='Property Photo'>";
+            } else {
+                echo "<p>No photos available for this property.</p>";
+            }
+            ?>
         </div>
 
         <div class="gallery">

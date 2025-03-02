@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-require_once "VResortsConnction.php";
+require_once "VResortsConnection.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Get form data with fallback to avoid undefined array key warnings
