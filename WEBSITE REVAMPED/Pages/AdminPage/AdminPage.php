@@ -72,10 +72,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
             <p>View and manage all bookings.</p>
         </div>
 
-        <div id="users" class="content-section hidden">
-            <h1>Manage Users</h1>
-            <p>View and manage all users.</p>
-        </div>
+       
 
         <div id="analytics" class="content-section hidden">
             <h1>Analytics</h1>
