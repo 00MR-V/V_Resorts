@@ -19,7 +19,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
         <li><a href="/V_Resorts/WEBSITE%20REVAMPED/Pages/AdminPage/AdminPage.php" data-section="dashboard">Dashboard</a></li>
         <li><a href="/V_Resorts/WEBSITE REVAMPED/Pages/AdminPage/AdminManageProperties/AdminManageProperties.php">Manage Properties</a></li>
         <li><a href="/V_Resorts/WEBSITE REVAMPED/Pages/AdminPage/AdminManageBooking/AdminManageBooking.php">Manage Bookings</a></li>
-        <li><a href="#">Analytics</a></li>
+        <li><a href="/V_Resorts/WEBSITE REVAMPED/Pages/AdminPage/AdminPageAnalytics\AdminPageAnalytics.php">Analytics</a></li>
         <li><a href="/V_Resorts/WEBSITE%20REVAMPED/Pages/HomePage/HomePage.php">Back to User Home Page</a></li>
     </ul>
 </div>
