@@ -221,6 +221,17 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
     </div> <!-- End of Main Content -->
+    <!-- Read More Modal -->
+    <!-- Read More Modal -->
+    <div id="readMoreModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button" id="closeReadMoreModal">&times;</span>
+            
+            <p id="readMoreContent"></p>
+        </div>
+    </div>
+
+
 
     <!-- Include Sidebar JS -->
     <script src="../AdminSideBar.js"></script>

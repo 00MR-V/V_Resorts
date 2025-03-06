@@ -14,6 +14,19 @@ $(document).ready(function () {
         $("#propertyModal").addClass("hidden");
     });
 
+    // Read More Modal for Description
+    $(document).on("click", ".read-more", function (e) {
+        e.preventDefault();
+        let fullText = $(this).data("fulltext");
+        $("#readMoreContent").text(fullText);
+        $("#readMoreModal").removeClass("hidden");
+    });
+
+    // Close Read More Modal
+    $("#closeReadMoreModal").click(function () {
+        $("#readMoreModal").addClass("hidden");
+    });
+
     // Submit form (Add/Edit Property)
     $("#propertyForm").submit(function (e) {
         e.preventDefault();

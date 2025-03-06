@@ -145,6 +145,10 @@ table th, table td {
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 9999;
 }
+.hidden {
+    display: none;
+}
+
 
 .modal.hidden {
     display: none;
