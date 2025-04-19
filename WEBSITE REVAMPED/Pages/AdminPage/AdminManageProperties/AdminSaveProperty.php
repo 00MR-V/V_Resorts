@@ -1,5 +1,8 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once "../../../database/VResortsConnection.php";
 
 // Ensure admin is logged in
@@ -7,66 +10,73 @@ if (!isset($_SESSION['user_id'])) {
     echo "Error: Unauthorized access";
     exit;
 }
+$adminId = (int)$_SESSION['user_id'];
 
-$admin_id = $_SESSION['user_id']; // Get the logged-in admin's ID
+// Gather and sanitize inputs
+$propertyId      = isset($_POST['propertyId']) && $_POST['propertyId'] !== '' 
+                   ? (int)$_POST['propertyId'] 
+                   : null;
+$name            = trim($_POST['propertyName']      ?? '');
+$type            = trim($_POST['propertyType']      ?? '');
+$location        = trim($_POST['propertyLocation']  ?? '');
+$price           = (float)($_POST['propertyPrice']  ?? 0);
+$availability    = (int)($_POST['propertyAvailability'] ?? 0);
+$description     = trim($_POST['propertyDescription'] ?? '');
+$bigDescription  = trim($_POST['bigDescription']      ?? '');
+$capacity        = trim($_POST['propertyCapacity']   ?? '');
 
-$propertyId      = $_POST['propertyId'] ?? null;
-$name            = $_POST['propertyName'] ?? '';
-$type            = $_POST['propertyType'] ?? '';
-$location        = $_POST['propertyLocation'] ?? '';
-$price           = $_POST['propertyPrice'] ?? 0;
-$availability    = $_POST['propertyAvailability'] ?? 0;
-$description     = $_POST['propertyDescription'] ?? "No description available";
-$big_description = $_POST['bigDescription'] ?? null;
-$capacity        = $_POST['propertyCapacity'] ?? null;
+// Convert amenities string into JSON
+$amenitiesArr = [];
+if (!empty($_POST['propertyAmenities'])) {
+    $amenitiesArr = array_map('trim', explode(',', $_POST['propertyAmenities']));
+}
+$amenitiesJson = json_encode($amenitiesArr, JSON_UNESCAPED_UNICODE);
 
-// Handle amenities - Convert from comma-separated string to JSON array
-$amenities = isset($_POST['propertyAmenities']) ? json_encode(array_map('trim', explode(",", $_POST['propertyAmenities']))) : "[]";
-
-// Process property photo upload and store binary data directly in the database
-$property_photo_blob = null;
-if (!empty($_FILES['propertyPhoto']['name']) && $_FILES['propertyPhoto']['error'] === UPLOAD_ERR_OK) {
-    $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
-    $file_type = mime_content_type($_FILES['propertyPhoto']['tmp_name']);
-    if (in_array($file_type, $allowed_types)) {
-        $property_photo_blob = file_get_contents($_FILES['propertyPhoto']['tmp_name']);
+// Handle single property image upload
+$propertyPhotoBlob = null;
+if (!empty($_FILES['propertyPhoto']['tmp_name']) && $_FILES['propertyPhoto']['error'] === UPLOAD_ERR_OK) {
+    $mime = mime_content_type($_FILES['propertyPhoto']['tmp_name']);
+    if (in_array($mime, ['image/jpeg','image/png','image/webp'], true)) {
+        $propertyPhotoBlob = file_get_contents($_FILES['propertyPhoto']['tmp_name']);
     } else {
-        echo "Error: Invalid image format for property photo.";
+        echo "Error: Invalid property image format.";
         exit;
     }
 }
 
-// Process gallery photos upload: read each file and store as a base64 encoded string in a JSON array
-$gallery_photos_array = [];
+// Handle gallery uploads: store base64 strings
+$galleryArr = [];
 if (!empty($_FILES['galleryPhotos']['tmp_name'][0])) {
-    foreach ($_FILES['galleryPhotos']['tmp_name'] as $key => $tmp_name) {
-        $file_type = mime_content_type($tmp_name);
-        if (in_array($file_type, ['image/jpeg', 'image/png', 'image/webp'])) {
-            $gallery_blob = file_get_contents($tmp_name);
-            // Store each gallery image as a base64 encoded string
-            $gallery_photos_array[] = base64_encode($gallery_blob);
+    foreach ($_FILES['galleryPhotos']['tmp_name'] as $tmp) {
+        if (is_uploaded_file($tmp)) {
+            $mime = mime_content_type($tmp);
+            if (in_array($mime, ['image/jpeg','image/png','image/webp'], true)) {
+                $galleryArr[] = base64_encode(file_get_contents($tmp));
+            }
         }
     }
 }
-$gallery_photos_json = json_encode($gallery_photos_array);
+$galleryJson = json_encode($galleryArr, JSON_UNESCAPED_UNICODE);
 
 try {
     if ($propertyId) {
-        // Update Property using COALESCE to keep existing images if new ones are not provided.
-        // For gallery photos, if no new images are uploaded, we use NULLIF to treat an empty JSON array ('[]') as NULL.
-        $sql = "UPDATE property SET 
-                    Name = ?,
-                    Type = ?,
-                    Location = ?,
-                    Price = ?,
-                    Availability = ?,
-                    Description = ?,
-                    Big_Description = ?,
-                    propertyPhoto = COALESCE(?, propertyPhoto),
-                    Amenities = ?,
-                    Gallery_Photos = COALESCE(NULLIF(?, '[]'), Gallery_Photos),
-                    Capacity = ?
-                WHERE Property_ID = ?";
+        // UPDATE existing
+        $sql = "
+            UPDATE property SET
+                Name            = ?,
+                Type            = ?,
+                Location        = ?,
+                Price           = ?,
+                Availability    = ?,
+                Description     = ?,
+                Big_Description = ?,
+                propertyPhoto   = COALESCE(?, propertyPhoto),
+                Amenities       = ?,
+                Gallery_Photos  = COALESCE(NULLIF(?, '[]'), Gallery_Photos),
+                Capacity        = ?
+            WHERE Property_ID = ?
+              AND Admin_ID    = ?
+        ";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             $name,
@@ -75,31 +85,37 @@ try {
             $price,
             $availability,
             $description,
-            $big_description,
-            $property_photo_blob, // if null, propertyPhoto remains unchanged
-            $amenities,
-            $gallery_photos_json, // if '[]', Gallery_Photos remains unchanged
+            $bigDescription,
+            $propertyPhotoBlob,
+            $amenitiesJson,
+            $galleryJson,
             $capacity,
-            $propertyId
+            $propertyId,
+            $adminId
         ]);
         echo "Property updated successfully!";
     } else {
-        // Insert New Property
-        $sql = "INSERT INTO property (Admin_ID, Name, Type, Location, Price, Availability, Description, Big_Description, propertyPhoto, Amenities, Gallery_Photos, Capacity) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // INSERT new
+        $sql = "
+            INSERT INTO property
+              (Admin_ID, Name, Type, Location, Price, Availability,
+               Description, Big_Description, propertyPhoto,
+               Amenities, Gallery_Photos, Capacity)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
-            $admin_id,
+            $adminId,
             $name,
             $type,
             $location,
             $price,
             $availability,
             $description,
-            $big_description,
-            $property_photo_blob,
-            $amenities,
-            $gallery_photos_json,
+            $bigDescription,
+            $propertyPhotoBlob,
+            $amenitiesJson,
+            $galleryJson,
             $capacity
         ]);
         echo "New property added!";
@@ -107,4 +123,3 @@ try {
 } catch (PDOException $e) {
     echo "Database Error: " . $e->getMessage();
 }
-?>

@@ -74,9 +74,9 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php foreach ($properties as $row) { ?>
                     <tr>
                         <td><?php echo $row['Property_ID']; ?></td>
-                        <td><?php echo $row['Name']; ?></td>
-                        <td><?php echo $row['Type']; ?></td>
-                        <td><?php echo $row['Location']; ?></td>
+                        <td><?php echo htmlspecialchars($row['Name']); ?></td>
+                        <td><?php echo htmlspecialchars($row['Type']); ?></td>
+                        <td><?php echo htmlspecialchars($row['Location']); ?></td>
                         <td>$<?php echo $row['Price']; ?></td>
                         <td><?php echo $row['Availability'] ? 'Unavailable' : 'Available'; ?></td>
                         <td>
@@ -84,7 +84,8 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             $desc_words = explode(" ", $row['Description']);
                             echo implode(" ", array_slice($desc_words, 0, 10));
                             if (count($desc_words) > 10) {
-                                echo " ... <a href='#' class='read-more' data-fulltext='" . htmlspecialchars($row['Description']) . "'>Read More</a>";
+                                echo " ... <a href='#' class='read-more' data-fulltext='" 
+                                     . htmlspecialchars($row['Description']) . "'>Read More</a>";
                             }
                             ?>
                         </td>
@@ -93,19 +94,18 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             $big_desc_words = explode(" ", $row['Big_Description']);
                             echo implode(" ", array_slice($big_desc_words, 0, 10));
                             if (count($big_desc_words) > 10) {
-                                echo " ... <a href='#' class='read-more' data-fulltext='" . htmlspecialchars($row['Big_Description']) . "'>Read More</a>";
+                                echo " ... <a href='#' class='read-more' data-fulltext='" 
+                                     . htmlspecialchars($row['Big_Description']) . "'>Read More</a>";
                             }
                             ?>
                         </td>
-                        <td><?php echo $row['Capacity']; ?></td>
-                        <!-- Decode JSON for Amenities -->
+                        <td><?php echo htmlspecialchars($row['Capacity']); ?></td>
                         <td>
                             <?php
                             $amenities = json_decode($row['Amenities'], true);
                             echo is_array($amenities) ? implode(", ", $amenities) : "No Amenities Listed";
                             ?>
                         </td>
-                        <!-- Display Property Image from BLOB -->
                         <td>
                             <?php
                             if (!empty($row['propertyPhoto'])) {
@@ -116,14 +116,12 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             }
                             ?>
                         </td>
-                        <!-- Display Gallery Images from BLOB -->
                         <td>
                             <?php
                             $gallery = json_decode($row['Gallery_Photos'], true);
                             if (!empty($gallery) && is_array($gallery)) {
                                 foreach ($gallery as $photo) {
-                                    $base64Gallery = base64_encode($photo);
-                                    echo "<img src='data:image/jpeg;base64,$base64Gallery' width='50' height='50' style='margin: 2px;'>";
+                                    echo "<img src='data:image/jpeg;base64,$photo' width='50' height='50' style='margin:2px;'>";
                                 }
                             } else {
                                 echo "No Gallery";
@@ -201,14 +199,24 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </select>
                     </div>
 
+                    <!-- Main Photo Upload & Preview -->
                     <div class="form-group">
                         <label for="propertyPhoto">Property Image:</label>
                         <input type="file" id="propertyPhoto" name="propertyPhoto">
                     </div>
+                    <div class="form-group full-width" id="existingPhotoPreview" style="display:none;">
+                        <label>Existing Photo:</label>
+                        <img id="existingPhotoImg" src="" width="100" height="100" alt="Property Photo">
+                    </div>
 
+                    <!-- Gallery Upload & Preview -->
                     <div class="form-group">
                         <label for="galleryPhotos">Gallery Photos (Multiple):</label>
                         <input type="file" id="galleryPhotos" name="galleryPhotos[]" multiple>
+                    </div>
+                    <div class="form-group full-width" id="existingGalleryPreview" style="display:none;">
+                        <label>Existing Gallery:</label>
+                        <div id="existingGalleryImgs"></div>
                     </div>
 
                     <!-- Form Action Buttons -->
@@ -221,17 +229,14 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
     </div> <!-- End of Main Content -->
-    <!-- Read More Modal -->
+
     <!-- Read More Modal -->
     <div id="readMoreModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-button" id="closeReadMoreModal">&times;</span>
-            
             <p id="readMoreContent"></p>
         </div>
     </div>
-
-
 
     <!-- Include Sidebar JS -->
     <script src="../AdminSideBar.js"></script>

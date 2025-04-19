@@ -6,7 +6,11 @@ $(document).ready(function () {
         $("#propertyModal").removeClass("hidden");
         $("#modalTitle").text("Add New Property");
         $("#propertyForm")[0].reset();
-        $("#propertyId").val(""); // Clear hidden ID field
+        $("#propertyId").val("");
+        // hide + clear all previews
+        $("#existingPhotoPreview").hide();
+        $("#existingGalleryPreview").hide();
+        $("#existingGalleryImgs").empty();
     });
 
     // Close modal
@@ -14,24 +18,20 @@ $(document).ready(function () {
         $("#propertyModal").addClass("hidden");
     });
 
-    // Read More Modal for Description
+    // Read More Modal
     $(document).on("click", ".read-more", function (e) {
         e.preventDefault();
         let fullText = $(this).data("fulltext");
         $("#readMoreContent").text(fullText);
         $("#readMoreModal").removeClass("hidden");
     });
-
-    // Close Read More Modal
     $("#closeReadMoreModal").click(function () {
         $("#readMoreModal").addClass("hidden");
     });
 
-    // Submit form (Add/Edit Property)
+    // Submit form (Add/Edit)
     $("#propertyForm").submit(function (e) {
         e.preventDefault();
-
-        // Validate required fields
         if (
             $("#propertyName").val().trim() === "" ||
             $("#propertyType").val().trim() === "" ||
@@ -41,9 +41,7 @@ $(document).ready(function () {
             alert("⚠️ Please fill in all required fields.");
             return;
         }
-
         let formData = new FormData(this);
-
         $.ajax({
             url: "AdminSaveProperty.php",
             type: "POST",
@@ -56,21 +54,19 @@ $(document).ready(function () {
                 $("#propertyModal").addClass("hidden");
                 fetchProperties();
             },
-            error: function (xhr, status, error) {
+            error: function (xhr) {
                 console.log("❌ Save Property Error:", xhr.responseText);
                 alert("❌ An error occurred while saving the property.");
             },
         });
     });
 
-    // Edit property (Prefill Modal)
+    // Edit property (prefill + previews)
     $(document).on("click", ".editBtn", function () {
         let propertyId = $(this).data("id");
-
         console.log("📌 Property ID being sent:", propertyId);
-
         if (!propertyId) {
-            alert("⚠️ Error: No property ID found. Make sure `data-id` is set in the button.");
+            alert("⚠️ Error: No property ID found.");
             return;
         }
 
@@ -81,23 +77,73 @@ $(document).ready(function () {
             dataType: "json",
             success: function (data) {
                 console.log("📌 Response from server:", data);
-
                 if (data.error) {
                     alert("❌ Error: " + data.error);
                     return;
                 }
 
+                // Core fields
                 $("#propertyId").val(data.Property_ID);
                 $("#propertyName").val(data.Name);
                 $("#propertyType").val(data.Type);
                 $("#propertyLocation").val(data.Location);
                 $("#propertyPrice").val(data.Price);
                 $("#propertyAvailability").val(data.Availability);
+                $("#propertyDescription").val(data.Description || "");
+                $("#bigDescription").val(data.Big_Description || "");
+                $("#propertyCapacity").val(data.Capacity || "");
+                $("#propertyAmenities").val(
+                    Array.isArray(data.Amenities) ? data.Amenities.join(", ") : ""
+                );
 
+                // ─── Main Photo Preview ───────────────────
+                if (data.propertyPhoto) {
+                    $("#existingPhotoImg")
+                        .attr("src", "data:image/jpeg;base64," + data.propertyPhoto);
+                    $("#existingPhotoPreview").show();
+                } else {
+                    $("#existingPhotoPreview").hide();
+                }
+
+                // ─── Gallery Preview ──────────────────────
+                $("#existingGalleryImgs").empty();
+                if (Array.isArray(data.Gallery_Photos) && data.Gallery_Photos.length) {
+                    data.Gallery_Photos.forEach(function (b64, idx) {
+                        const $box = $(`
+                            <div class="preview-container" data-index="${idx}">
+                              <span class="remove-photo">×</span>
+                              <img src="data:image/jpeg;base64,${b64}" alt="Gallery Photo">
+                            </div>
+                        `);
+                        $("#existingGalleryImgs").append($box);
+                    });
+                    $("#existingGalleryPreview").show();
+                } else {
+                    $("#existingGalleryPreview").hide();
+                }
+
+                // ─── Remove handlers ──────────────────────
+                // main photo
+                $("#existingPhotoPreview .remove-photo")
+                  .off("click")
+                  .on("click", function () {
+                    $("#existingPhotoImg").attr("src", "");
+                    $("#propertyPhoto").val("");
+                    $("#existingPhotoPreview").hide();
+                  });
+
+                // per‑item gallery
+                $("#existingGalleryImgs")
+                  .off("click", ".remove-photo")
+                  .on("click", ".remove-photo", function () {
+                    $(this).parent(".preview-container").remove();
+                  });
+
+                // Show modal
                 $("#propertyModal").removeClass("hidden");
                 $("#modalTitle").text("Edit Property");
             },
-            error: function (xhr, status, error) {
+            error: function (xhr) {
                 console.log("❌ AJAX error:", xhr.responseText);
                 alert("❌ An error occurred while fetching property details.");
             },
@@ -106,24 +152,22 @@ $(document).ready(function () {
 
     // Delete property
     $(document).on("click", ".deleteBtn", function () {
-        if (confirm("⚠️ Are you sure you want to delete this property?")) {
-            let propertyId = $(this).data("id");
-
-            $.ajax({
-                url: "AdminDeleteProperty.php",
-                type: "POST",
-                data: { propertyId: propertyId },
-                success: function (response) {
-                    console.log("✅ Delete Property Response:", response);
-                    alert(response);
-                    fetchProperties();
-                },
-                error: function (xhr, status, error) {
-                    console.log("❌ Delete Property Error:", xhr.responseText);
-                    alert("❌ An error occurred while deleting the property.");
-                },
-            });
-        }
+        if (!confirm("⚠️ Are you sure you want to delete this property?")) return;
+        let propertyId = $(this).data("id");
+        $.ajax({
+            url: "AdminDeleteProperty.php",
+            type: "POST",
+            data: { propertyId: propertyId },
+            success: function (response) {
+                console.log("✅ Delete Property Response:", response);
+                alert(response);
+                fetchProperties();
+            },
+            error: function (xhr) {
+                console.log("❌ Delete Property Error:", xhr.responseText);
+                alert("❌ An error occurred while deleting the property.");
+            },
+        });
     });
 
     // Fetch properties dynamically
@@ -131,23 +175,20 @@ $(document).ready(function () {
         $.ajax({
             url: "AdminGetProperty.php",
             type: "POST",
-            dataType: "html", // ✅ Expect HTML response
+            dataType: "html",
             success: function (data) {
                 console.log("✅ Fetch Properties Response:", data);
-    
                 if (!data.trim()) {
                     alert("⚠️ No properties found.");
-                    $("tbody").html("<tr><td colspan='8'>No properties found.</td></tr>");
+                    $("tbody").html("<tr><td colspan='13'>No properties found.</td></tr>");
                     return;
                 }
-    
                 $("tbody").html(data);
             },
-            error: function (xhr, status, error) {
+            error: function (xhr) {
                 console.log("❌ Fetch Properties Error:", xhr.responseText);
                 alert("❌ Error in fetching properties.");
             },
         });
     }
-    
 });

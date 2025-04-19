@@ -268,7 +268,34 @@ table th, table td {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-
+/* ========== Preview–box styling ========== */
+.preview-container {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+  }
+  .preview-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  .remove-photo {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: #fff;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  
 /* ========== Responsive Adjustments ========== */
 @media (max-width: 768px) {
     .modal-content {
