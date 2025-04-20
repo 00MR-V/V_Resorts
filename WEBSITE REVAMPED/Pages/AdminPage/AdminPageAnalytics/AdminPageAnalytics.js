@@ -1,5 +1,5 @@
-// AdminPageAnalytics.js
-var barChart, donutChart, revenueChart; // Global chart variables
+
+var barChart, donutChart, revenueChart; 
 
 $(document).ready(function() {
     $("#loadAnalytics").on("click", function() {
@@ -25,7 +25,7 @@ $(document).ready(function() {
                     $("#analyticsText").html("<p>Error: " + data.error + "</p>");
                     return;
                 }
-                // Build textual analytics HTML
+             
                 let html = "<h2>" + heading + "</h2>";
                 html += "<p><strong>Total Bookings:</strong> " + data.totalBookings + "</p>";
                 html += "<p><strong>Total Revenue:</strong> $" + numberWithCommas(data.totalRevenue.toFixed(2)) + "</p>";
@@ -34,7 +34,7 @@ $(document).ready(function() {
                 html += "<p><strong>Cancellation Rate:</strong> " + data.cancellationRate + "%</p>";
                 $("#analyticsText").html(html);
                 
-                // Update Bar Chart: Total vs. Cancelled Bookings
+
                 let barLabels = ['Total Bookings', 'Cancelled Bookings'];
                 let barData = [data.totalBookings, data.cancelledBookings];
                 if (!barChart) {
@@ -67,7 +67,7 @@ $(document).ready(function() {
                     barChart.update();
                 }
                 
-                // Update Donut Chart: Cancelled vs. Non-Cancelled Bookings
+           
                 let nonCancelled = data.totalBookings - data.cancelledBookings;
                 let donutLabels = ['Cancelled', 'Not Cancelled'];
                 let donutData = [data.cancelledBookings, nonCancelled];
@@ -94,7 +94,7 @@ $(document).ready(function() {
                     donutChart.update();
                 }
                 
-                // Load Revenue Chart (line chart) for revenue over time
+            
                 loadRevenueChart(propertyId, groupBy);
             },
             error: function(xhr, status, error) {
