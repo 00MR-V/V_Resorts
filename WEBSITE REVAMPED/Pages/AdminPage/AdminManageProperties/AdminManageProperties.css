@@ -1,4 +1,4 @@
-/* ========== General Styles ========== */
+
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
@@ -21,7 +21,7 @@ h1 {
     font-weight: 600;
 }
 
-/* ========== Buttons ========== */
+
 button {
     border: none;
     padding: 12px 25px;
@@ -36,7 +36,7 @@ button:hover {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Updated: 'Add New Property' Button */
+
 #addPropertyBtn {
     background-color: #228B22;
     color: #fff;
@@ -46,18 +46,18 @@ button:hover {
     display: inline-block;
 }
 
-/* Restore Original Colors for Edit & Delete Buttons */
+
 .editBtn {
-    background-color: #ffcc00; /* Restored to Yellow */
+    background-color: #ffcc00; 
     color: #fff;
 }
 
 .deleteBtn {
-    background-color: #ff4d4f; /* Restored to Red */
+    background-color: #ff4d4f; 
     color: #fff;
 }
 
-/* ========== Table Styling ========== */
+
 .table-container {
     overflow-x: auto;
 }
@@ -81,7 +81,7 @@ table th, table td {
     border-bottom: 1px solid #eee;
 }
 
-/* ========== Read More Modal ========== */
+
 .read-more-modal {
     position: fixed;
     top: 50%;
@@ -99,7 +99,7 @@ table th, table td {
     align-items: center;
 }
 
-/* Fix White Box Issue */
+
 .read-more-modal p {
     text-align: justify;
     font-size: 1rem;
@@ -107,11 +107,10 @@ table th, table td {
     color: #444;
     padding: 10px;
     margin: 0;
-    background: transparent !important; /* Fix white box issue */
+    background: transparent !important; 
     box-shadow: none !important;
 }
 
-/* Read More Modal Overlay */
 .read-more-overlay {
     position: fixed;
     top: 0;
@@ -122,7 +121,7 @@ table th, table td {
     z-index: 9999;
 }
 
-/* Close Button */
+
 .read-more-modal .close-btn {
     position: absolute;
     top: 10px;
@@ -132,7 +131,7 @@ table th, table td {
     color: #333;
 }
 
-/* ========== Modal Styling ========== */
+
 .modal {
     position: fixed;
     top: 0;
@@ -165,7 +164,7 @@ table th, table td {
     text-align: left;
 }
 
-/* Close Button */
+
 .close-button {
     position: absolute;
     top: 20px;
@@ -181,7 +180,7 @@ table th, table td {
     color: #333;
 }
 
-/* ========== Form Layout (2 Columns) ========== */
+
 #propertyForm {
     display: flex;
     flex-wrap: wrap;
@@ -189,7 +188,7 @@ table th, table td {
     gap: 15px;
 }
 
-/* Form Groups: Two Columns */
+
 .form-group {
     width: 48%;
     display: flex;
@@ -200,14 +199,14 @@ table th, table td {
     width: 100%;
 }
 
-/* Labels */
+
 .form-group label {
     margin-bottom: 5px;
     font-weight: 500;
     color: #555;
 }
 
-/* Inputs, Textareas, and Selects */
+
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group input[type="file"],
@@ -234,7 +233,7 @@ table th, table td {
     box-shadow: 0 0 0 2px rgba(34, 139, 34, 0.2);
 }
 
-/* ========== Form Actions (Buttons) ========== */
+
 .form-actions {
     display: flex;
     justify-content: flex-end;
@@ -243,21 +242,21 @@ table th, table td {
     width: 100%;
 }
 
-/* ========== Save Button ========== */
+
 .save-button {
-    background-color: #228B22; /* Forest Green */
+    background-color: #228B22;
     color: #fff;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .save-button:hover {
-    background-color: #228B22 !important; /* Keep the same green */
+    background-color: #228B22 !important; 
     color: #fff;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Cancel Button */
+
 .cancel-button {
     background-color: #ff4d4f;
     color: #fff;
@@ -268,7 +267,8 @@ table th, table td {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-/* ========== Preview–box styling ========== */
+
+
 .preview-container {
     position: relative;
     display: inline-block;
@@ -296,7 +296,7 @@ table th, table td {
     box-shadow: 0 1px 3px rgba(0,0,0,0.3);
   }
   
-/* ========== Responsive Adjustments ========== */
+
 @media (max-width: 768px) {
     .modal-content {
         width: 95%;
@@ -304,12 +304,12 @@ table th, table td {
         padding: 20px;
     }
 
-    /* Stack Inputs on Smaller Screens */
+    
     .form-group {
         width: 100%;
     }
 
-    /* Make Read More Modal Responsive */
+  
     .read-more-modal {
         width: 90%;
         max-width: 90%;

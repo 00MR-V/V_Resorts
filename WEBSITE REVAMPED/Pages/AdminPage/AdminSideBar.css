@@ -1,4 +1,4 @@
-/* General Styles */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -7,7 +7,7 @@ body {
     background-color: #f8f9fa;
 }
 
-/* Sidebar */
+
 .sidebar {
     width: 250px;
     background-color: #007bff;
@@ -49,24 +49,24 @@ body {
     background-color: #0056b3;
 }
 
-/* Main Content */
+
 .main-content {
     margin-left: 250px;
     padding: 20px;
     width: calc(100% - 250px);
 }
 
-/* Hide all sections by default */
+
 .content-section {
     display: none;
 }
 
-/* Ensure the active section is visible */
+
 .content-section.active {
     display: block;
 }
 
-/* Buttons */
+
 button {
     background-color: #007bff;
     color: white;

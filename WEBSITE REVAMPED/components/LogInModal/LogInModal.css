@@ -28,7 +28,7 @@
     text-align: center; 
 }
 
-/* Close button */
+
 .logInCloseButton {
     position: absolute;
     top: 10px;
@@ -44,43 +44,43 @@
 }
 
 .logInGrayLineTop {
-    border-top: 1px solid rgba(160, 160, 160, 0.6); /* 1px gray line with 60% opacity */
-    width: 100%; /* Adjust as needed */
-    height: 0; /* Ensures it's just a line */
+    border-top: 1px solid rgba(160, 160, 160, 0.6); 
+    width: 100%; 
+    height: 0; 
 }
 
 
 
 
-/* Input fields */
+
 .inputGroup {
     margin-bottom: 15px;
-    display: flex; /* Use flexbox for alignment */
-    align-items: center; /* Align items vertically */
-    justify-content: space-between; /* Push label and input to opposite ends */
-    gap: 10px; /* Optional: Add spacing between label and input */
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 10px; 
 }
 
 .inputGroup label {
     display: block;
     font-size: 14px;
     color: #333;
-    flex: 3; /* Allow label to take up space on the left */
-    text-align: left; /* Align text to the left */
+    flex: 3; 
+    text-align: left; 
 }
 
 .inputGroup input {
-    flex: 4; /* Allow input to take up more space on the right */
+    flex: 4; 
     width: 100%;
     padding: 10px;
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 100%; /* Ensure it adjusts to available space */
-    max-width: 300px; /* Optional: Limit the input width */
+    width: 100%; 
+    max-width: 300px; 
 }
 
-/* Submit button */
+
 .logInSignInButton {
     width: 100%;
     padding: 10px;
@@ -96,7 +96,7 @@
     background-color: #0056b3;
 }
 
-/* Forgot password link */
+
 .logInforgotPassword {
     font-size: 14px;
     color: #007bff;

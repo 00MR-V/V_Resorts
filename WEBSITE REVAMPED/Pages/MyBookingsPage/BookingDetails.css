@@ -1,4 +1,4 @@
-/* ================ ROOT VARIABLES ================ */
+
 :root {
   --primary-color: #3498db;
   --primary-dark: #2980b9;
@@ -15,12 +15,12 @@
   --transition: all 0.3s ease;
 }
 
-/* ================ BOX‑SIZING RESET ONLY ================ */
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
-/* ================ GLOBAL BODY STYLES ================ */
+
 body {
   font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
   line-height: 1.6;
@@ -29,7 +29,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ================ PAGE‑SPECIFIC LAYOUT ================ */
+
 .details-container {
   max-width: 1200px;
   margin: 3rem auto;
@@ -69,7 +69,7 @@ body {
   background-color: white;
 }
 
-/* ================ TYPOGRAPHY ================ */
+
 .details-container h1,
 .details-container h2,
 .details-container h3,
@@ -111,8 +111,7 @@ body {
   font-size: 0.9em;
 }
 
-/* ================ COMPONENTS ================ */
-/* Status Badges */
+
 .details-container .status {
   display: inline-block;
   padding: 0.5rem 1rem;
@@ -149,7 +148,7 @@ body {
   color: #383d41;
 }
 
-/* Section wrapper backgrounds */
+
 .details-container .section-content {
   background: var(--light-gray);
   padding: 1.5rem;
@@ -165,7 +164,7 @@ body {
   background: #f5fff0;
 }
 
-/* ================ UTILITIES ================ */
+
 .details-container .text-center {
   text-align: center;
 }
@@ -179,7 +178,7 @@ body {
   gap: 1rem;
 }
 
-/* ================ BUTTON STYLES ================ */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -214,7 +213,7 @@ body {
   box-shadow: 0 4px 8px rgba(41, 128, 185, 0.1);
 }
 
-/* ================ RESPONSIVE DESIGN ================ */
+
 @media (max-width: 992px) {
   .details-container .card-body {
     grid-template-columns: 1fr 1fr;

@@ -1,6 +1,4 @@
-/* AdminPageAnalytics.css */
 
-/* ========== General Styles ========== */
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #f0f4f8;
@@ -12,7 +10,7 @@ body {
 }
 
 .main-content.analytics-content {
-    margin-left: 250px; /* Matches sidebar width */
+    margin-left: 250px; 
     padding: 40px;
     width: calc(100% - 250px);
 }
@@ -24,7 +22,7 @@ h1 {
     color: #34495e;
 }
 
-/* ========== Analytics Filter Section ========== */
+
 .analytics-filter {
     margin-bottom: 30px;
     display: flex;
@@ -68,7 +66,7 @@ h1 {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* ========== Analytics Results Section ========== */
+
 .analytics-results {
     background: #fff;
     border-radius: 8px;
@@ -76,7 +74,7 @@ h1 {
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* Text analytics styling */
+
 .analytics-results h2 {
     font-size: 1.5rem;
     margin-bottom: 20px;
@@ -89,7 +87,7 @@ h1 {
     color: #2C3E50;
 }
 
-/* ========== Charts Container (2 x 2 Grid) ========== */
+
 #chartsContainer {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -98,18 +96,18 @@ h1 {
     margin-top: 20px;
 }
 
-/* Each chart wrapper takes full width of its grid cell */
+
 .chart-wrapper {
     width: 100%;
 }
 
-/* Ensure canvas elements fill their container by default */
+
 .chart-wrapper canvas {
     width: 100% !important;
     height: auto !important;
 }
 
-/* ========== Responsive Adjustments ========== */
+
 @media (max-width: 768px) {
     #chartsContainer {
         grid-template-columns: 1fr;
@@ -123,10 +121,9 @@ h1 {
     }
 }
 
-/* ========== Make Only the Donut Chart Smaller ========== */
-/* We specifically target .donut-wrapper's canvas */
+
 .chart-wrapper.donut-wrapper canvas {
-    max-width: 400px !important;  /* Adjust as desired */
-    max-height: 400px !important; /* Adjust as desired */
+    max-width: 400px !important;  
+    max-height: 400px !important; 
     margin: 0 auto;
 }

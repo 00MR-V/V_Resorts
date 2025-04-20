@@ -14,42 +14,42 @@
     padding: 10px 20px;
     padding-right: 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    height: 55px; /* Keeps the height fixed */
-    width: 1000px; /* Keeps the width fixed */
+    height: 55px; 
+    width: 1000px; 
 }
 
 .search-item {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 0 10px; /* Space between search items */
-    flex: 1; /* Ensure all search items take equal space */
+    margin: 0 10px; 
+    flex: 1; 
 }
 
 .search-item label {
-    font-size: 14px; /* Increased font size */
+    font-size: 14px; 
     color: #555;
-    margin-bottom: 5px; /* Slightly increased spacing for better alignment */
+    margin-bottom: 5px; 
     text-align: left;
 }
 
 .search-item input {
     border: none;
     background: none;
-    font-size: 16px; /* Increased font size */
+    font-size: 16px; 
     color: #000;
     outline: none;
-    width: 100%; /* Ensures input takes full width */
+    width: 100%; 
 }
 
 .search-item input::placeholder {
     color: #aaa;
-    font-size: 14px; /* Increased placeholder font size */
+    font-size: 14px; 
 }
 
 .divider {
     width: 1px;
-    height: 40px; /* Fits neatly in the 55px box */
+    height: 40px; 
     background-color: #ddd;
 }
 
@@ -64,7 +64,7 @@
     cursor: pointer;
     margin-left: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    height: 70px; /* Increased button height */
+    height: 70px; 
     width: 125px;
     font-size: 16px;
 }
@@ -76,11 +76,11 @@
 .search-button img {
     width: 22px;
     height: 22px;
-    margin-right: 8px; /* Slightly increased margin for better spacing */
+    margin-right: 8px; 
     color: #3F51B5;
 }
 
 .search-button span {
-    font-size: 16px; /* Increased font size */
+    font-size: 16px; 
     color: #555;
 }
