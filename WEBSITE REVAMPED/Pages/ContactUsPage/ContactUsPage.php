@@ -28,7 +28,7 @@
 
 <body>
   <?php
-  $show_search_box = false; // Set this to false to hide the search box
+  $show_search_box = false; 
   include '../../components/HeaderComponents/HeaderComponent.php';
   ?>
 

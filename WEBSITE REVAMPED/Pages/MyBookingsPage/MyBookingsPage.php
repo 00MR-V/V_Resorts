@@ -2,7 +2,7 @@
 session_start();
 require_once '../../database/VResortsConnection.php';
 
-// Ensure user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error_msg'] = 'Please log in to view your bookings.';
     header('Location: /V_Resorts/WEBSITE REVAMPED/Pages/LoginPage/LoginPage.php');
@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = (int)$_SESSION['user_id'];
 
-// Fetch all bookings for this user, newest first
+
 $stmt = $pdo->prepare("
     SELECT 
       b.Booking_ID,
@@ -35,10 +35,10 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Bookings – V Resorts</title>
 
-  <!-- Page CSS -->
+  
   <link rel="stylesheet" href="MyBookingsPage.css">
 
-  <!-- Site‐wide CSS & JS -->
+  
   <link rel="stylesheet" href="../../components/HeaderComponents/HeaderComponent.css">
   <script defer src="../../components/HeaderComponents/HeaderComponent.js"></script>
   <link rel="stylesheet" href="../../components/LogInModal/LogInModal.css">
@@ -65,7 +65,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php else: ?>
       <div class="booking-cards">
         <?php foreach ($bookings as $b): 
-          // Status badge color
+          
           switch ($b['Status']) {
             case 'Confirmed': $badgeClass = 'badge--green'; break;
             case 'Pending':   $badgeClass = 'badge--orange'; break;

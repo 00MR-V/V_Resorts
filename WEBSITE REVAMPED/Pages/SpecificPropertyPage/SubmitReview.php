@@ -16,7 +16,7 @@ if (!$propertyId || !$bookingId || $comment === '') {
     die("Missing data.");
 }
 
-// 1. Verify booking belongs to this user & property, and is completed (Check_Out < today)
+
 $stmt = $pdo->prepare("
     SELECT 1
     FROM booking
@@ -35,14 +35,14 @@ if (!$stmt->fetch()) {
     die("Invalid booking.");
 }
 
-// 2. Ensure no existing review for this booking
+
 $chk = $pdo->prepare("SELECT 1 FROM review WHERE Booking_ID = :bid");
 $chk->execute([':bid' => $bookingId]);
 if ($chk->fetch()) {
     die("You’ve already reviewed this stay.");
 }
 
-// 3. Insert the review
+
 $ins = $pdo->prepare("
     INSERT INTO review (Booking_ID, Review_Date, Comment)
     VALUES (:bid, CURDATE(), :comment)
@@ -52,6 +52,6 @@ $ins->execute([
     ':comment' => $comment
 ]);
 
-// Redirect back
+
 header("Location: SpecificPropertyPage.php?property_id={$propertyId}#reviews");
 exit;

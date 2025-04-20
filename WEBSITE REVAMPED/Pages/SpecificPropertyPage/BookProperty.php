@@ -1,10 +1,10 @@
 <?php
-// Pages/SpecificPropertyPage/BookProperty.php
+
 
 session_start();
 require_once '../../database/VResortsConnection.php';
 
-// 1) Ensure user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error_msg'] = 'Please log in before booking.';
     header('Location: LoginPage.php');
@@ -16,7 +16,7 @@ $propertyId = isset($_POST['property_id']) ? (int)$_POST['property_id'] : 0;
 $checkIn    = $_POST['check_in']  ?? '';
 $checkOut   = $_POST['check_out'] ?? '';
 
-// 2) Basic validation
+
 if (!$propertyId || !$checkIn || !$checkOut) {
     $_SESSION['error_msg'] = 'Please select both check‑in and check‑out dates.';
     header("Location: SpecificPropertyPage.php?property_id={$propertyId}");
@@ -29,7 +29,7 @@ if ($checkIn >= $checkOut) {
 }
 
 try {
-    // 3) Availability check: ensure no overlapping non‑cancelled bookings
+    
     $avail = $pdo->prepare("
         SELECT COUNT(*) FROM booking
         WHERE Property_ID = :pid
@@ -50,7 +50,7 @@ try {
         exit;
     }
 
-    // 4) Insert new Pending booking
+    
     $ins = $pdo->prepare("
         INSERT INTO booking
           (Property_ID, Customer_ID, Check_In_Date, Check_Out_Date, Status)
@@ -65,7 +65,7 @@ try {
     ]);
     $bookingId = $pdo->lastInsertId();
 
-    // 5) Redirect to PaymentPage
+    
     header("Location: PaymentPage.php?booking_id={$bookingId}");
     exit;
 

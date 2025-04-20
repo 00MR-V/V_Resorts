@@ -5,14 +5,14 @@ ini_set('display_errors', 1);
 
 require_once "../../../database/VResortsConnection.php";
 
-// Ensure admin is logged in
+
 if (!isset($_SESSION['user_id'])) {
     echo "Error: Unauthorized access";
     exit;
 }
 $adminId = (int)$_SESSION['user_id'];
 
-// Gather and sanitize inputs
+
 $propertyId      = isset($_POST['propertyId']) && $_POST['propertyId'] !== '' 
                    ? (int)$_POST['propertyId'] 
                    : null;
@@ -25,14 +25,14 @@ $description     = trim($_POST['propertyDescription'] ?? '');
 $bigDescription  = trim($_POST['bigDescription']      ?? '');
 $capacity        = trim($_POST['propertyCapacity']   ?? '');
 
-// Convert amenities string into JSON
+
 $amenitiesArr = [];
 if (!empty($_POST['propertyAmenities'])) {
     $amenitiesArr = array_map('trim', explode(',', $_POST['propertyAmenities']));
 }
 $amenitiesJson = json_encode($amenitiesArr, JSON_UNESCAPED_UNICODE);
 
-// Handle single property image upload
+
 $propertyPhotoBlob = null;
 if (!empty($_FILES['propertyPhoto']['tmp_name']) && $_FILES['propertyPhoto']['error'] === UPLOAD_ERR_OK) {
     $mime = mime_content_type($_FILES['propertyPhoto']['tmp_name']);
@@ -44,7 +44,7 @@ if (!empty($_FILES['propertyPhoto']['tmp_name']) && $_FILES['propertyPhoto']['er
     }
 }
 
-// Handle gallery uploads: store base64 strings
+
 $galleryArr = [];
 if (!empty($_FILES['galleryPhotos']['tmp_name'][0])) {
     foreach ($_FILES['galleryPhotos']['tmp_name'] as $tmp) {
@@ -60,7 +60,7 @@ $galleryJson = json_encode($galleryArr, JSON_UNESCAPED_UNICODE);
 
 try {
     if ($propertyId) {
-        // UPDATE existing
+
         $sql = "
             UPDATE property SET
                 Name            = ?,
@@ -95,7 +95,7 @@ try {
         ]);
         echo "Property updated successfully!";
     } else {
-        // INSERT new
+   
         $sql = "
             INSERT INTO property
               (Admin_ID, Name, Type, Location, Price, Availability,

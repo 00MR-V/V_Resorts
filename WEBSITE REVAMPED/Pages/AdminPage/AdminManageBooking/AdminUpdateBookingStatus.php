@@ -2,7 +2,7 @@
 session_start();
 require_once "../../../database/VResortsConnection.php";
 
-// Ensure admin is logged in
+
 if (!isset($_SESSION['user_id'])) {
     echo "Unauthorized access";
     exit;
@@ -17,7 +17,7 @@ if (!$bookingId || !$newStatus) {
     exit;
 }
 
-// Update booking status only if the booking belongs to one of the admin's properties
+
 $sql = "UPDATE booking b
         JOIN property p ON b.Property_ID = p.Property_ID
         SET b.Status = :newStatus

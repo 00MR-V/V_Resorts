@@ -1,4 +1,4 @@
-// components/SearchComponents/SearchComponent.js
+
 document.addEventListener('DOMContentLoaded', () => {
     const destinationInput = document.getElementById('search-destination');
     const checkInInput     = document.getElementById('check-in-date');
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const guestInput       = document.getElementById('guest-count');
     const searchButton     = document.querySelector('.search-button');
 
-    // Always focus the "Where" field without scrolling the page
+   
     if (destinationInput) {
         destinationInput.focus({ preventScroll: true });
     }
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = `/V_Resorts/WEBSITE REVAMPED/Pages/PropertiesPage/PropertiesPage.php${qs}`;
     }
 
-    // Trigger search on button click or Enter
+    
     searchButton.addEventListener('click', doSearch);
     [destinationInput, checkInInput, checkOutInput, guestInput].forEach(input => {
         input.addEventListener('keypress', e => {

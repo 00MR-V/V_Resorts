@@ -1,9 +1,9 @@
 <?php
-// Pages/SpecificPropertyPage/PaymentPage.php
+
 session_start();
 require_once '../../database/VResortsConnection.php';
 
-// Must be logged in
+
 if (!isset($_SESSION['user_id'])) {
   header('Location: LoginPage.php');
   exit;
@@ -14,7 +14,7 @@ if (!$bookingId) {
   die("Booking not found.");
 }
 
-// Fetch booking + property
+
 $stmt = $pdo->prepare("
   SELECT b.Check_In_Date, b.Check_Out_Date, p.Name, p.Price
   FROM booking b
@@ -32,7 +32,7 @@ if (!$info) {
   die("Booking not found or unauthorized.");
 }
 
-// Calculate nights & amount
+
 $ci = new DateTime($info['Check_In_Date']);
 $co = new DateTime($info['Check_Out_Date']);
 $nights = $ci->diff($co)->days;

@@ -1,24 +1,24 @@
 $(document).ready(function () {
     console.log("✅ Admin Manage Properties Script Loaded");
 
-    // Open modal for adding a new property
+
     $("#addPropertyBtn").click(function () {
         $("#propertyModal").removeClass("hidden");
         $("#modalTitle").text("Add New Property");
         $("#propertyForm")[0].reset();
         $("#propertyId").val("");
-        // hide + clear all previews
+    
         $("#existingPhotoPreview").hide();
         $("#existingGalleryPreview").hide();
         $("#existingGalleryImgs").empty();
     });
 
-    // Close modal
+    
     $("#closeModal, #closeModal2").click(function () {
         $("#propertyModal").addClass("hidden");
     });
 
-    // Read More Modal
+   
     $(document).on("click", ".read-more", function (e) {
         e.preventDefault();
         let fullText = $(this).data("fulltext");
@@ -29,7 +29,7 @@ $(document).ready(function () {
         $("#readMoreModal").addClass("hidden");
     });
 
-    // Submit form (Add/Edit)
+    
     $("#propertyForm").submit(function (e) {
         e.preventDefault();
         if (
@@ -61,7 +61,7 @@ $(document).ready(function () {
         });
     });
 
-    // Edit property (prefill + previews)
+ 
     $(document).on("click", ".editBtn", function () {
         let propertyId = $(this).data("id");
         console.log("📌 Property ID being sent:", propertyId);
@@ -82,7 +82,7 @@ $(document).ready(function () {
                     return;
                 }
 
-                // Core fields
+              
                 $("#propertyId").val(data.Property_ID);
                 $("#propertyName").val(data.Name);
                 $("#propertyType").val(data.Type);
@@ -96,7 +96,7 @@ $(document).ready(function () {
                     Array.isArray(data.Amenities) ? data.Amenities.join(", ") : ""
                 );
 
-                // ─── Main Photo Preview ───────────────────
+                
                 if (data.propertyPhoto) {
                     $("#existingPhotoImg")
                         .attr("src", "data:image/jpeg;base64," + data.propertyPhoto);
@@ -105,7 +105,7 @@ $(document).ready(function () {
                     $("#existingPhotoPreview").hide();
                 }
 
-                // ─── Gallery Preview ──────────────────────
+            
                 $("#existingGalleryImgs").empty();
                 if (Array.isArray(data.Gallery_Photos) && data.Gallery_Photos.length) {
                     data.Gallery_Photos.forEach(function (b64, idx) {
@@ -122,8 +122,7 @@ $(document).ready(function () {
                     $("#existingGalleryPreview").hide();
                 }
 
-                // ─── Remove handlers ──────────────────────
-                // main photo
+            
                 $("#existingPhotoPreview .remove-photo")
                   .off("click")
                   .on("click", function () {
@@ -132,14 +131,14 @@ $(document).ready(function () {
                     $("#existingPhotoPreview").hide();
                   });
 
-                // per‑item gallery
+             
                 $("#existingGalleryImgs")
                   .off("click", ".remove-photo")
                   .on("click", ".remove-photo", function () {
                     $(this).parent(".preview-container").remove();
                   });
 
-                // Show modal
+            
                 $("#propertyModal").removeClass("hidden");
                 $("#modalTitle").text("Edit Property");
             },
@@ -150,7 +149,7 @@ $(document).ready(function () {
         });
     });
 
-    // Delete property
+
     $(document).on("click", ".deleteBtn", function () {
         if (!confirm("⚠️ Are you sure you want to delete this property?")) return;
         let propertyId = $(this).data("id");
@@ -170,7 +169,6 @@ $(document).ready(function () {
         });
     });
 
-    // Fetch properties dynamically
     function fetchProperties() {
         $.ajax({
             url: "AdminGetProperty.php",

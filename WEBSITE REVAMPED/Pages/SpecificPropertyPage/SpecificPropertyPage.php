@@ -2,16 +2,16 @@
 session_start();
 require_once '../../database/VResortsConnection.php';
 
-// Hide the header search box
+
 $show_search_box = false;
 
-// Validate property ID
+
 $property_id = isset($_GET['property_id']) ? (int)$_GET['property_id'] : null;
 if (!$property_id) {
     die("Property not found!");
 }
 
-// Fetch property details
+
 $stmt = $pdo->prepare("SELECT * FROM property WHERE Property_ID = :pid");
 $stmt->execute([':pid' => $property_id]);
 $property = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -19,7 +19,7 @@ if (!$property) {
     die("Property not found!");
 }
 
-// Fetch reviews
+
 $reviewStmt = $pdo->prepare("
     SELECT r.Review_Date, r.Comment, c.Username
     FROM review r
@@ -31,7 +31,7 @@ $reviewStmt = $pdo->prepare("
 $reviewStmt->execute([':pid' => $property_id]);
 $reviews = $reviewStmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Fetch eligible past bookings for leaving a review
+
 $eligibleBookings = [];
 if (isset($_SESSION['user_id'])) {
     $pendingStmt = $pdo->prepare("
@@ -49,7 +49,7 @@ if (isset($_SESSION['user_id'])) {
     $eligibleBookings = $pendingStmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// ** NEW: fetch all non‑cancelled bookings to disable those dates **
+
 $disableStmt = $pdo->prepare("
     SELECT Check_In_Date, Check_Out_Date
     FROM booking
@@ -69,33 +69,33 @@ $disabledJson = htmlspecialchars(json_encode($disabledRanges), ENT_QUOTES, 'UTF-
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title><?= htmlspecialchars($property['Name']) ?> – V Resorts</title>
 
-  <!-- Flatpickr CSS -->
+ 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-  <!-- Site‑wide CSS & JS -->
+  
   <link rel="stylesheet" href="../../components/HeaderComponents/HeaderComponent.css">
   <link rel="stylesheet" href="../../components/LogInModal/LogInModal.css">
   <link rel="stylesheet" href="../../components/SignUpModal/SignUpModal.css">
   <link rel="stylesheet" href="../../components/SignUpModal/AdminSignUpModal.css">
   <link rel="stylesheet" href="../../components/FooterComponents/FooterComponent.css">
 
-  <!-- Page‑specific CSS -->
+  
   <link rel="stylesheet" href="SpecificPropertyPage.css">
 
-  <!-- Site‑wide JS (deferred) -->
+ 
   <script defer src="../../components/HeaderComponents/HeaderComponent.js"></script>
   <script defer src="../../components/LogInModal/LogInModal.js"></script>
   <script defer src="../../components/SignUpModal/SignUpModal.js"></script>
   <script defer src="../../components/SignUpModal/AdminSignUpModal.js"></script>
 
-  <!-- Flatpickr JS -->
+ 
   <script defer src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body>
   <?php include '../../components/HeaderComponents/HeaderComponent.php'; ?>
 
   <main class="property-details">
-    <!-- LEFT COLUMN: Gallery + Booking -->
+
     <div class="left-col">
       <div class="gallery">
         <?php if (!empty($property['propertyPhoto'])): ?>
@@ -117,7 +117,7 @@ $disabledJson = htmlspecialchars(json_encode($disabledRanges), ENT_QUOTES, 'UTF-
           <input type="hidden" id="checkInInput" name="check_in">
           <input type="hidden" id="checkOutInput" name="check_out">
 
-          <!-- pass disabled ranges in data-disabled -->
+         
           <div
             id="calendar"
             data-price="<?= $property['Price'] ?>"
@@ -142,7 +142,7 @@ $disabledJson = htmlspecialchars(json_encode($disabledRanges), ENT_QUOTES, 'UTF-
       </aside>
     </div>
 
-    <!-- RIGHT COLUMN: Property Info -->
+    
     <section class="property-info">
       <h1><?= htmlspecialchars($property['Name']) ?></h1>
       <p class="location"><?= htmlspecialchars($property['Location']) ?></p>
@@ -169,7 +169,6 @@ $disabledJson = htmlspecialchars(json_encode($disabledRanges), ENT_QUOTES, 'UTF-
       </div>
     </section>
 
-    <!-- Reviews -->
     <section class="reviews" id="reviews">
       <h2>Guest Reviews</h2>
       <?php if (empty($reviews)): ?>
@@ -187,7 +186,6 @@ $disabledJson = htmlspecialchars(json_encode($disabledRanges), ENT_QUOTES, 'UTF-
       <?php endif; ?>
     </section>
 
-    <!-- Leave a Review -->
     <?php if (isset($_SESSION['user_id'])): ?>
       <section class="leave-review">
         <h2>Leave a Review</h2>
@@ -260,7 +258,7 @@ $disabledJson = htmlspecialchars(json_encode($disabledRanges), ENT_QUOTES, 'UTF-
         inline: true,
         dateFormat: 'Y-m-d',
         minDate: 'today',
-        disable: disabled,    // <— NEW: disable existing bookings
+        disable: disabled,    
         onChange: dates => {
           if (dates.length === 2) {
             const [start, end] = dates;

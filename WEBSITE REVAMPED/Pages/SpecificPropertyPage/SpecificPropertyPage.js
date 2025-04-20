@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inline: true,
     dateFormat: "Y-m-d",
     minDate: "today",
-    disable: disabled,  // <— now an array of {from,to} objects
+    disable: disabled,  
     onChange: selectedDates => {
       if (selectedDates.length === 2) {
         const [start, end] = selectedDates;

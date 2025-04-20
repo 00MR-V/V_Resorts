@@ -3,7 +3,7 @@ session_start();
 if (!isset($_SESSION['admin_logged_in'])) {
     $_SESSION['admin_logged_in'] = true;
     $_SESSION['admin_name'] = 'Admin User';
-    $_SESSION['user_id'] = 1; // Set the admin ID here so that your queries in AdminGetProperty.php, AdminSaveProperty.php, etc. work properly.
+    $_SESSION['user_id'] = 1; 
 }
 ?>
 
@@ -14,14 +14,14 @@ if (!isset($_SESSION['admin_logged_in'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="../../Pages/AdminPage//AdminSideBar.css">
+    <link rel="stylesheet" type="text/css" href="../../Pages/AdminPage/AdminSideBar.css">
     <script src="../../Pages/AdminPage/AdminSideBar.js"></script>
 </head>
 
 <body>
-    <!-- Admin Sidebar -->
+   
     <?php include "AdminSidebar.php"; ?>
-    <!-- Main Content -->
+ 
     <div class="main-content">
         <div id="dashboard" class="content-section active">
             <h1>Admin Dashboard</h1>

@@ -2,7 +2,7 @@
 session_start();
 require_once "../../../database/VResortsConnection.php";
 
-// Ensure admin is logged in
+
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(["error" => "Unauthorized access"]);
     exit;
@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 $admin_id = $_SESSION['user_id'];
 $property_id = isset($_POST['property_id']) ? trim($_POST['property_id']) : "";
 
-// If "all" is selected (or empty), aggregate analytics for all properties owned by the admin
+
 if ($property_id === "" || strtolower($property_id) === "all") {
     $sql = "SELECT COUNT(DISTINCT b.Booking_ID) AS totalBookings,
                    COALESCE(SUM(bp.totalPayment), 0) AS totalRevenue,
@@ -29,7 +29,7 @@ if ($property_id === "" || strtolower($property_id) === "all") {
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 } else {
-    // Verify the property belongs to the logged-in admin
+    
     $sql = "SELECT Property_ID FROM property WHERE Property_ID = :property_id AND Admin_ID = :admin_id";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':property_id', $property_id, PDO::PARAM_INT);
@@ -39,7 +39,7 @@ if ($property_id === "" || strtolower($property_id) === "all") {
         echo json_encode(["error" => "Unauthorized property"]);
         exit;
     }
-    // Query analytics for the specific property.
+   
     $sql = "SELECT COUNT(DISTINCT b.Booking_ID) AS totalBookings,
                    COALESCE(SUM(bp.totalPayment), 0) AS totalRevenue,
                    COALESCE(AVG(bp.totalPayment), 0) AS avgBookingValue,

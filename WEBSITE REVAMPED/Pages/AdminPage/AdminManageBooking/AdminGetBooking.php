@@ -2,14 +2,14 @@
 session_start();
 require_once "../../../database/VResortsConnection.php";
 
-// Ensure admin is logged in
+
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(["error" => "Unauthorized access"]);
     exit;
 }
 $admin_id = $_SESSION['user_id'];
 
-// Check if a specific booking is requested (detailed view)
+
 $bookingId = isset($_POST['bookingId']) ? trim($_POST['bookingId']) : null;
 if ($bookingId) {
     $sql = "SELECT b.Booking_ID,
@@ -55,7 +55,7 @@ if ($bookingId) {
     exit;
 }
 
-// Otherwise, fetch all bookings for the admin's properties with optional filtering
+
 $search = isset($_POST['search']) ? trim($_POST['search']) : "";
 $sql = "SELECT b.Booking_ID,
                b.Check_In_Date,
@@ -106,7 +106,7 @@ foreach ($bookings as $b) {
         <td>
             <button class='viewBookingBtn' data-id='" . $b['Booking_ID'] . "'>View Details</button>";
     
-    // Display status update buttons based on current status
+   
     switch ($b['Status']) {
         case 'Pending':
             $html .= " <button class='updateStatusBtn' data-id='" . $b['Booking_ID'] . "' data-newstatus='Confirmed'>Confirm</button>
@@ -120,8 +120,7 @@ foreach ($bookings as $b) {
             $html .= " <button class='updateStatusBtn' data-id='" . $b['Booking_ID'] . "' data-newstatus='Pending'>Reopen</button>";
             break;
         case 'Completed':
-            // Optionally, you can allow reopening a completed booking
-            // $html .= " <button class='updateStatusBtn' data-id='" . $b['Booking_ID'] . "' data-newstatus='Pending'>Reopen</button>";
+           
             break;
     }
     

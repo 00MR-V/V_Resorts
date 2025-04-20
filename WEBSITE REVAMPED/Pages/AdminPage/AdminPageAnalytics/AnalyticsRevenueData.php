@@ -25,7 +25,7 @@ if ($property_id === "" || strtolower($property_id) === "all") {
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {
-    // Verify the property belongs to the logged-in admin
+    
     $sql = "SELECT Property_ID FROM property WHERE Property_ID = :property_id AND Admin_ID = :admin_id";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':property_id', $property_id, PDO::PARAM_INT);

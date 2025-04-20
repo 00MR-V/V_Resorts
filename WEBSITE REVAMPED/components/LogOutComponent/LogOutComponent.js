@@ -9,7 +9,7 @@ function logOutUser() {
     .then(text => {
         console.log('Response text:', text);
         if (text.indexOf('successful') !== -1) {
-            // Redirect to the homepage
+            
             window.location.href = '/V_Resorts/WEBSITE%20REVAMPED/Pages/HomePage/HomePage.php';
         } else {
             alert('Logout failed. Please try again.');

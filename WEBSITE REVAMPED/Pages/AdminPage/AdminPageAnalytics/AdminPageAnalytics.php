@@ -2,14 +2,13 @@
 session_start();
 require_once "../../../database/VResortsConnection.php";
 
-// Ensure admin is logged in
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../../AdminPage.php");
     exit;
 }
 $admin_id = $_SESSION['user_id'];
 
-// Fetch properties belonging to the logged-in admin
 $sql = "SELECT Property_ID, Name FROM property WHERE Admin_ID = :admin_id ORDER BY Name ASC";
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':admin_id', $admin_id, PDO::PARAM_INT);
@@ -24,12 +23,12 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Analytics</title>
     <link rel="stylesheet" href="AdminPageAnalytics.css">
-    <!-- jQuery Library -->
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Chart.js Library -->
+   
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="AdminPageAnalytics.js"></script>
-    <!-- Include Admin Sidebar CSS -->
+
     <link rel="stylesheet" href="../AdminSideBar.css">
 </head>
 
@@ -58,7 +57,7 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div id="analyticsText">
                 <p>Loading analytics...</p>
             </div>
-            <!-- Charts Container: All charts side by side -->
+
             <div id="chartsContainer">
                 <div class="chart-wrapper">
                     <canvas id="revenueChart"></canvas>
@@ -66,7 +65,7 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="chart-wrapper">
                     <canvas id="barChart"></canvas>
                 </div>
-                <!-- Add donut-wrapper here -->
+               
                 <div class="chart-wrapper donut-wrapper">
                     <canvas id="donutChart"></canvas>
                 </div>
@@ -75,7 +74,7 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
     <script>
-        // Load overall analytics on page load
+   
         $(document).ready(function() {
             $("#loadAnalytics").trigger("click");
         });

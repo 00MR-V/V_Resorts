@@ -4,8 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 $current_page = basename($_SERVER['PHP_SELF']);
 
-// Check if the search box should be displayed
-$show_search_box = isset($show_search_box) ? $show_search_box : true; // Default is true, can be overridden
+
+$show_search_box = isset($show_search_box) ? $show_search_box : true; 
 ?>
 
 <!DOCTYPE html>

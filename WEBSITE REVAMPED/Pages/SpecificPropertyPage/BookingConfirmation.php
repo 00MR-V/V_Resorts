@@ -7,7 +7,7 @@ if (!$bookingId) {
     die("Booking not found.");
 }
 
-// Fetch booking + property details
+
 $stmt = $pdo->prepare("
     SELECT b.Booking_ID, b.Check_In_Date, b.Check_Out_Date, b.Status,
            p.Name, p.Location, p.Price

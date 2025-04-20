@@ -1,5 +1,5 @@
 <?php
-// Pages/SpecificPropertyPage/PaymentProcess.php
+
 session_start();
 require_once '../../database/VResortsConnection.php';
 
@@ -13,7 +13,7 @@ if (!$bookingId) {
   die("Invalid request.");
 }
 
-// Fetch booking & amount again (to guard against tampering)
+
 $stmt = $pdo->prepare("
   SELECT b.Check_In_Date, b.Check_Out_Date, p.Price
   FROM booking b
@@ -39,14 +39,14 @@ $amount = $nights * $info['Price'];
 try {
   $pdo->beginTransaction();
 
-  // 1) Insert into payment
+  
   $ins = $pdo->prepare("
     INSERT INTO payment (Booking_ID, Payment_Date, Amount)
     VALUES (:bid, CURDATE(), :amt)
   ");
   $ins->execute([':bid'=>$bookingId, ':amt'=>$amount]);
 
-  // 2) Update booking status
+  
   $upd = $pdo->prepare("
     UPDATE booking
        SET Status = 'Confirmed'
@@ -56,7 +56,7 @@ try {
 
   $pdo->commit();
 
-  // 3) Redirect to confirmation
+
   header("Location: BookingConfirmation.php?booking_id={$bookingId}");
   exit;
 

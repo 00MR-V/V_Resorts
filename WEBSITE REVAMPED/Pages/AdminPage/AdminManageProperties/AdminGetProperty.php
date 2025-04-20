@@ -3,7 +3,7 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Determine whether this is a single‐property (AJAX) request or a table refresh
+
 $propertyId = isset($_POST['propertyId']) ? trim($_POST['propertyId']) : null;
 if ($propertyId !== null && $propertyId !== '') {
     header('Content-Type: application/json; charset=UTF-8');
@@ -11,7 +11,7 @@ if ($propertyId !== null && $propertyId !== '') {
     header('Content-Type: text/html; charset=UTF-8');
 }
 
-// Ensure admin is logged in
+
 if (!isset($_SESSION['user_id'])) {
     if ($propertyId) {
         echo json_encode(['error' => 'Unauthorized access']);
@@ -22,10 +22,10 @@ if (!isset($_SESSION['user_id'])) {
 }
 $adminId = (int)$_SESSION['user_id'];
 
-// Database connection
+
 require_once "../../../database/VResortsConnection.php";
 
-// ---- Single‐property fetch (JSON) ----
+
 if ($propertyId) {
     try {
         $sql = "
@@ -51,18 +51,18 @@ if ($propertyId) {
             exit;
         }
 
-        // decode Amenities
+        
         $prop['Amenities'] = !empty($prop['Amenities'])
             ? json_decode($prop['Amenities'], true)
             : [];
 
-        // base64‐encode main photo
+       
         $prop['propertyPhoto'] = null;
         if (!empty($prop['propertyPhoto'])) {
             $prop['propertyPhoto'] = base64_encode($prop['propertyPhoto']);
         }
 
-        // gallery is stored as JSON array of base64 strings already
+        
         $prop['Gallery_Photos'] = !empty($prop['Gallery_Photos'])
             ? json_decode($prop['Gallery_Photos'], true)
             : [];
@@ -74,7 +74,7 @@ if ($propertyId) {
     exit;
 }
 
-// ---- Full table fetch (HTML rows) ----
+
 try {
     $sql = "
         SELECT

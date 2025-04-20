@@ -1,5 +1,5 @@
 <?php
-$properties = require 'FetchProperties.php'; // Fetch properties dynamically
+$properties = require 'FetchProperties.php'; 
 ?>
 
 <div class="horizontalScrollContainer">

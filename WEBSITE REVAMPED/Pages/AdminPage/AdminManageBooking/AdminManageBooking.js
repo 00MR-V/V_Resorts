@@ -1,17 +1,17 @@
-// AdminManageBooking.js
+
 $(document).ready(function () {
     console.log("Admin Manage Bookings Script Loaded");
 
-    // Fetch bookings on page load
+    
     fetchBookings();
 
-    // Filter bookings when the filter form is submitted (press Enter or click Filter)
+    
     $("#filterForm").on("submit", function(e) {
         e.preventDefault();
         fetchBookings();
     });
 
-    // Event: View booking details
+    
     $(document).on("click", ".viewBookingBtn", function () {
         let bookingId = $(this).data("id");
         $.ajax({
@@ -43,12 +43,12 @@ $(document).ready(function () {
         });
     });
 
-    // Event: Close modal
+    
     $(document).on("click", ".close-button", function () {
         $("#bookingModal").addClass("hidden");
     });
 
-    // Event: Update booking status
+  
     $(document).on("click", ".updateStatusBtn", function () {
         let bookingId = $(this).data("id");
         let newStatus = $(this).data("newstatus");
@@ -68,7 +68,7 @@ $(document).ready(function () {
         }
     });
 
-    // Function to fetch all bookings, including filtering by the search term
+    
     function fetchBookings() {
         let searchTerm = $("input[name='search']").val();
         $.ajax({

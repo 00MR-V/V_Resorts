@@ -1,16 +1,16 @@
 <?php
 session_start();
-require_once "../../../database/VResortsConnection.php"; // Database connection file
+require_once "../../../database/VResortsConnection.php";
 
-// Ensure admin is logged in
+
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../../AdminPage.php"); // Redirect if not logged in
+    header("Location: ../../AdminPage.php");
     exit;
 }
 
-$admin_id = $_SESSION['user_id']; // Get logged-in admin's ID
+$admin_id = $_SESSION['user_id'];
 
-// Fetch properties owned by the logged-in admin
+
 $query = "SELECT * FROM property WHERE Admin_ID = :admin_id";
 $stmt = $pdo->prepare($query);
 $stmt->bindParam(':admin_id', $admin_id, PDO::PARAM_INT);
@@ -26,32 +26,32 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Properties</title>
 
-    <!-- Main CSS for this page -->
+
     <link rel="stylesheet" href="../AdminManageProperties/AdminManageProperties.css">
 
-    <!-- jQuery Library -->
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Main JS for this page -->
+
     <script src="../AdminManageProperties/AdminManageProperties.js"></script>
 
-    <!-- Include Sidebar CSS -->
+
     <link rel="stylesheet" href="../AdminSideBar.css">
 </head>
 
 <body>
 
-    <!-- Include Sidebar -->
+
     <?php include "../AdminSideBar.php"; ?>
 
-    <!-- Main Content -->
+
     <div class="main-content">
         <h1>Manage Your Properties</h1>
 
-        <!-- Add Property Button -->
+
         <button id="addPropertyBtn">Add New Property</button>
 
-        <!-- Properties Table -->
+
         <table>
             <thead>
                 <tr>
@@ -84,8 +84,8 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             $desc_words = explode(" ", $row['Description']);
                             echo implode(" ", array_slice($desc_words, 0, 10));
                             if (count($desc_words) > 10) {
-                                echo " ... <a href='#' class='read-more' data-fulltext='" 
-                                     . htmlspecialchars($row['Description']) . "'>Read More</a>";
+                                echo " ... <a href='#' class='read-more' data-fulltext='"
+                                    . htmlspecialchars($row['Description']) . "'>Read More</a>";
                             }
                             ?>
                         </td>
@@ -94,8 +94,8 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             $big_desc_words = explode(" ", $row['Big_Description']);
                             echo implode(" ", array_slice($big_desc_words, 0, 10));
                             if (count($big_desc_words) > 10) {
-                                echo " ... <a href='#' class='read-more' data-fulltext='" 
-                                     . htmlspecialchars($row['Big_Description']) . "'>Read More</a>";
+                                echo " ... <a href='#' class='read-more' data-fulltext='"
+                                    . htmlspecialchars($row['Big_Description']) . "'>Read More</a>";
                             }
                             ?>
                         </td>
@@ -137,18 +137,18 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </tbody>
         </table>
 
-        <!-- Add/Edit Property Modal -->
+
         <div id="propertyModal" class="modal hidden">
             <div class="modal-content">
-                <!-- Close Button (X) -->
+
                 <span class="close-button" id="closeModal">&times;</span>
 
-                <!-- Modal Title -->
+
                 <h2 id="modalTitle">Add New Property</h2>
 
-                <!-- Form -->
+
                 <form id="propertyForm" enctype="multipart/form-data">
-                    <!-- Hidden ID Field (For Edit) -->
+
                     <input type="hidden" id="propertyId" name="propertyId">
 
                     <div class="form-group">
@@ -199,7 +199,7 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </select>
                     </div>
 
-                    <!-- Main Photo Upload & Preview -->
+
                     <div class="form-group">
                         <label for="propertyPhoto">Property Image:</label>
                         <input type="file" id="propertyPhoto" name="propertyPhoto">
@@ -209,7 +209,7 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <img id="existingPhotoImg" src="" width="100" height="100" alt="Property Photo">
                     </div>
 
-                    <!-- Gallery Upload & Preview -->
+
                     <div class="form-group">
                         <label for="galleryPhotos">Gallery Photos (Multiple):</label>
                         <input type="file" id="galleryPhotos" name="galleryPhotos[]" multiple>
@@ -219,7 +219,7 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div id="existingGalleryImgs"></div>
                     </div>
 
-                    <!-- Form Action Buttons -->
+
                     <div class="form-actions">
                         <button type="submit" class="save-button">Save</button>
                         <button type="button" class="cancel-button" id="closeModal2">Cancel</button>
@@ -228,9 +228,9 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
 
-    </div> <!-- End of Main Content -->
+    </div>
 
-    <!-- Read More Modal -->
+
     <div id="readMoreModal" class="modal hidden">
         <div class="modal-content">
             <span class="close-button" id="closeReadMoreModal">&times;</span>
@@ -238,7 +238,6 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <!-- Include Sidebar JS -->
     <script src="../AdminSideBar.js"></script>
 </body>
 

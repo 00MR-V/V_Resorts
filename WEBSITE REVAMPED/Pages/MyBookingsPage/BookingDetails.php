@@ -2,7 +2,7 @@
 session_start();
 require_once '../../database/VResortsConnection.php';
 
-// 1) Ensure logged in
+
 $show_search_box = false;
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error_msg'] = 'Please log in to view booking details.';
@@ -16,7 +16,7 @@ if (!$bookingId) {
     die("Invalid booking reference.");
 }
 
-// 2) Fetch booking + property + payment summary (including Admin_ID)
+
 $stmt = $pdo->prepare("
   SELECT 
     b.Booking_ID,
@@ -47,7 +47,7 @@ if (!$info) {
     die("Booking not found or access denied.");
 }
 
-// 3) Fetch customer details
+
 $custStmt = $pdo->prepare("
   SELECT FName, LName, Email, Phone_Num, Address 
   FROM customers 
@@ -57,7 +57,7 @@ $custStmt = $pdo->prepare("
 $custStmt->execute([':cid' => $userId]);
 $customer = $custStmt->fetch(PDO::FETCH_ASSOC);
 
-// 4) Fetch owner (admin) details
+
 $ownerStmt = $pdo->prepare("
   SELECT FName, LName, Email, Phone_Num, Address 
   FROM adminn 
@@ -67,14 +67,14 @@ $ownerStmt = $pdo->prepare("
 $ownerStmt->execute([':aid' => $info['OwnerId']]);
 $owner = $ownerStmt->fetch(PDO::FETCH_ASSOC);
 
-// 5) Calculate derived values
+
 $ci     = new DateTime($info['Check_In_Date']);
 $co     = new DateTime($info['Check_Out_Date']);
 $nights = $ci->diff($co)->days;
 $total  = $nights * $info['PricePerNight'];
 $balance= $total - $info['TotalPaid'];
 
-// 6) Status badge class
+
 $statusClass = match($info['Status']) {
   'Pending'   => 'status--pending',
   'Confirmed' => 'status--confirmed',
@@ -90,13 +90,13 @@ $statusClass = match($info['Status']) {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Booking #<?= htmlspecialchars($info['Booking_ID']) ?> – V Resorts</title>
 
-  <!-- Global styles -->
+ 
   <link rel="stylesheet" href="../../components/HeaderComponents/HeaderComponent.css">
   <link rel="stylesheet" href="../../components/LogInModal/LogInModal.css">
   <link rel="stylesheet" href="../../components/SignUpModal/SignUpModal.css">
   <link rel="stylesheet" href="../../components/FooterComponents/FooterComponent.css">
 
-  <!-- Page styles -->
+
   <link rel="stylesheet" href="BookingDetails.css">
 </head>
 <body>
@@ -104,9 +104,9 @@ $statusClass = match($info['Status']) {
   <main class="details-container">
     <div class="card">
 
-      <!-- Header -->
+   
       <header class="card-header">
-        <h1>Booking #<?= $info['Booking_ID'] ?></h1>
+        <h1>Booking #<?= $info['Booking_ID'] ?></h1>
         <span class="status <?= $statusClass ?>">
           <?= htmlspecialchars(strtoupper($info['Status'])) ?>
         </span>
@@ -114,7 +114,6 @@ $statusClass = match($info['Status']) {
 
       <div class="card-body">
 
-        <!-- Customer Details -->
         <section class="section">
           <h3 class="section-heading">Customer Details</h3>
           <div class="section-content">
@@ -153,7 +152,7 @@ $statusClass = match($info['Status']) {
           </div>
         </section>
 
-        <!-- Payment Summary -->
+       
         <section class="section">
           <h3 class="section-heading">Payment Summary</h3>
           <div class="section-content">
@@ -165,7 +164,7 @@ $statusClass = match($info['Status']) {
         </section>
       </div>
 
-      <!-- Footer actions -->
+    
       <footer class="card-footer">
         <?php if ($balance > 0 && $info['Status'] === 'Pending'): ?>
           <a href="../SpecificPropertyPage/PaymentPage.php?booking_id=<?= $info['Booking_ID'] ?>"

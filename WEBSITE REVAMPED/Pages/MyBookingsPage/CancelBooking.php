@@ -2,7 +2,7 @@
 session_start();
 require_once '../../database/VResortsConnection.php';
 
-// Must be logged in
+
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error_msg'] = 'Please log in to cancel bookings.';
     header('Location: /V_Resorts/WEBSITE REVAMPED/Pages/LoginPage/LoginPage.php');
@@ -16,7 +16,7 @@ if (!$bookingId) {
     die("Invalid booking.");
 }
 
-// 1) Verify ownership
+
 $stmt = $pdo->prepare("
   SELECT Status
     FROM booking
@@ -40,7 +40,7 @@ if ($booking['Status'] === 'Cancelled') {
     exit;
 }
 
-// 2) Mark as cancelled
+
 $upd = $pdo->prepare("
   UPDATE booking
      SET Status = 'Cancelled'

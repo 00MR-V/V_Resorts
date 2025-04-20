@@ -1,25 +1,24 @@
 <?php
-// Pages/AdminPage/AdminSideBar.php
 
-// Start session if not already started
+
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// If the admin is not logged in, redirect to the login page
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../AdminPage.php");
     exit;
 }
 
-// Get the admin's ID from the session
 $adminId = (int) $_SESSION['user_id'];
 
-// Include database connection
+
 require_once __DIR__ . "/../../database/VResortsConnection.php";
 
 try {
-    // Fetch the admin's first and last name
+  
     $stmt = $pdo->prepare("
         SELECT FName, LName 
         FROM adminn 
@@ -29,19 +28,19 @@ try {
     $stmt->execute([':id' => $adminId]);
     $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Fallback to generic if not found
+   
     if ($admin) {
         $greetingName = htmlspecialchars($admin['FName'] . ' ' . $admin['LName']);
     } else {
         $greetingName = 'Admin';
     }
 } catch (PDOException $e) {
-    // On error just say “Admin”
+    
     $greetingName = 'Admin';
 }
 ?>
 
-<!-- Admin Sidebar -->
+
 <div class="sidebar">
     <div class="admin-info">
         <h2>Welcome Admin <?php echo $greetingName; ?></h2>
