@@ -1,26 +1,32 @@
+// components/HeaderComponents/HeaderComponent.js
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('searchInput');
-    const searchIcon = document.getElementById('searchIcon');
+    const searchIcon  = document.getElementById('searchIcon');
 
-    // Function to handle the search (e.g., redirect to search results page)
-    function handleSearch() {
-        const query = searchInput.value.trim(); // Get the search query
-        if (query) {
-            console.log("Searching for:", query);
-            // You can redirect to a search results page or handle the search in another way
-            window.location.href = `search_results.php?q=${encodeURIComponent(query)}`;
-        }
+    // Redirect into the big search on PropertiesPage
+    function forwardToBigSearch() {
+        const q = searchInput.value.trim();
+        const base = '/V_Resorts/WEBSITE%20REVAMPED/Pages/PropertiesPage/PropertiesPage.php';
+        // build URL without fragment
+        const url = q
+            ? `${base}?destination=${encodeURIComponent(q)}`
+            : base;
+        window.location.href = url;
     }
 
-    // Event listener for pressing "Enter"
+    // Enter in the header box
     searchInput.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
-            handleSearch();
+            e.preventDefault();
+            forwardToBigSearch();
         }
     });
 
-    // Event listener for clicking the search icon
+    // Click the header search icon
     searchIcon.addEventListener('click', function () {
-        handleSearch();
+        forwardToBigSearch();
     });
+
+    // On focus of the header box, go to big search
+    searchInput.addEventListener('focus', forwardToBigSearch);
 });

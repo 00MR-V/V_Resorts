@@ -107,14 +107,14 @@ try {
         echo "
         <tr>
             <td>{$row['Property_ID']}</td>
-            <td>".htmlspecialchars($row['Name'])."</td>
-            <td>".htmlspecialchars($row['Type'])."</td>
-            <td>".htmlspecialchars($row['Location'])."</td>
+            <td>" . htmlspecialchars($row['Name']) . "</td>
+            <td>" . htmlspecialchars($row['Type']) . "</td>
+            <td>" . htmlspecialchars($row['Location']) . "</td>
             <td>\${$row['Price']}</td>
             <td>{$availability}</td>
             <td>{$descPreview}</td>
             <td>{$bigDescPreview}</td>
-            <td>".htmlspecialchars($row['Capacity'])."</td>
+            <td>" . htmlspecialchars($row['Capacity']) . "</td>
             <td>{$amenitiesList}</td>
             <td>
                 <button class=\"editBtn\" data-id=\"{$row['Property_ID']}\">Edit</button>
