@@ -74,7 +74,7 @@ if (!$booking) {
       <div class="label">Status</div>
       <div class="value status"><?= htmlspecialchars($booking['Status']) ?></div>
     </div>
-    <a href="/V_Resorts/WEBSITE REVAMPED/Pages/AccountPage/MyBookings.php" class="btn">View My Bookings</a>
+    <a href="../../Pages/MyBookingsPage/MyBookingsPage.php" class="btn">View My Bookings</a>
   </div>
 </body>
 </html>
