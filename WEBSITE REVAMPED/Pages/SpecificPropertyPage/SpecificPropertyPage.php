@@ -48,6 +48,19 @@ if (isset($_SESSION['user_id'])) {
     ]);
     $eligibleBookings = $pendingStmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+// ** NEW: fetch all non‑cancelled bookings to disable those dates **
+$disableStmt = $pdo->prepare("
+    SELECT Check_In_Date, Check_Out_Date
+    FROM booking
+    WHERE Property_ID = :pid
+      AND Status != 'Cancelled'
+");
+$disableStmt->execute([':pid' => $property_id]);
+$disabledRanges = array_map(function($r){
+    return [$r['Check_In_Date'], $r['Check_Out_Date']];
+}, $disableStmt->fetchAll(PDO::FETCH_ASSOC));
+$disabledJson = htmlspecialchars(json_encode($disabledRanges), ENT_QUOTES, 'UTF-8');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,7 +117,12 @@ if (isset($_SESSION['user_id'])) {
           <input type="hidden" id="checkInInput" name="check_in">
           <input type="hidden" id="checkOutInput" name="check_out">
 
-          <div id="calendar" data-price="<?= $property['Price'] ?>"></div>
+          <!-- pass disabled ranges in data-disabled -->
+          <div
+            id="calendar"
+            data-price="<?= $property['Price'] ?>"
+            data-disabled='<?= $disabledJson ?>'
+          ></div>
 
           <div class="date-summary">
             <div>Check‑In: <span id="ciDisplay">—</span></div>
@@ -225,32 +243,34 @@ if (isset($_SESSION['user_id'])) {
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const calEl = document.getElementById('calendar');
-      if (!calEl) return;
+      if (!calEl || typeof flatpickr === 'undefined') return;
 
-      const price       = parseFloat(calEl.dataset.price) || 0;
-      const ciInput     = document.getElementById('checkInInput');
-      const coInput     = document.getElementById('checkOutInput');
-      const ciDisplay   = document.getElementById('ciDisplay');
-      const coDisplay   = document.getElementById('coDisplay');
-      const nightsDisp  = document.getElementById('nightsDisplay');
-      const subtotalDisp= document.getElementById('subtotalDisplay');
-      const clearBtn    = document.querySelector('.clear-dates');
+      const price        = parseFloat(calEl.dataset.price) || 0;
+      const disabled     = JSON.parse(calEl.dataset.disabled || '[]');
+      const ciInput      = document.getElementById('checkInInput');
+      const coInput      = document.getElementById('checkOutInput');
+      const ciDisplay    = document.getElementById('ciDisplay');
+      const coDisplay    = document.getElementById('coDisplay');
+      const nightsDisp   = document.getElementById('nightsDisplay');
+      const subtotalDisp = document.getElementById('subtotalDisplay');
+      const clearBtn     = document.querySelector('.clear-dates');
 
       const fp = flatpickr(calEl, {
         mode: 'range',
         inline: true,
         dateFormat: 'Y-m-d',
         minDate: 'today',
+        disable: disabled,    // <— NEW: disable existing bookings
         onChange: dates => {
           if (dates.length === 2) {
             const [start, end] = dates;
-            const nights = Math.round((end - start) / (1000*60*60*24));
+            const nights = Math.round((end - start)/(1000*60*60*24));
             ciInput.value = fp.formatDate(start, 'Y-m-d');
             coInput.value = fp.formatDate(end,   'Y-m-d');
-            ciDisplay.textContent = fp.formatDate(start, 'M j, Y');
-            coDisplay.textContent = fp.formatDate(end,   'M j, Y');
-            nightsDisp.textContent  = nights;
-            subtotalDisp.textContent = 'Rs. ' + (nights * price).toLocaleString();
+            ciDisplay.textContent    = fp.formatDate(start, 'M j, Y');
+            coDisplay.textContent    = fp.formatDate(end,   'M j, Y');
+            nightsDisp.textContent   = nights;
+            subtotalDisp.textContent = 'Rs. '+(nights*price).toLocaleString();
           }
         }
       });
@@ -259,8 +279,8 @@ if (isset($_SESSION['user_id'])) {
         fp.clear();
         ciInput.value = coInput.value = '';
         ciDisplay.textContent = coDisplay.textContent = '—';
-        nightsDisp.textContent = '0';
-        subtotalDisp.textContent = 'Rs. 0';
+        nightsDisp.textContent    = '0';
+        subtotalDisp.textContent  = 'Rs. 0';
       });
     });
   </script>
