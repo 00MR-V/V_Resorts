@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 $current_page = basename($_SERVER['PHP_SELF']);
 
 
-$show_search_box = isset($show_search_box) ? $show_search_box : true; 
+$show_search_box = isset($show_search_box) ? $show_search_box : true;
 ?>
 
 <!DOCTYPE html>
@@ -41,22 +41,22 @@ $show_search_box = isset($show_search_box) ? $show_search_box : true;
                 </a>
             </li>
             <li>
-                <a href="../../Pages/AboutUsPage/AboutUsPage.php">
-                    ABOUT US
+                <a href="../../Pages/MyBookingsPage/MyBookingsPage.php">
+                    MY BOOKINGS
                 </a>
             </li>
         </ul>
 
         <!-- Conditionally display search box -->
         <?php if ($show_search_box): ?>
-        <div class="searchBox">
-            <div class="searchBox1">
-                <input type="text" id="searchInput" placeholder="Search..." />
+            <div class="searchBox">
+                <div class="searchBox1">
+                    <input type="text" id="searchInput" placeholder="Search..." />
+                </div>
+                <div class="searchBox2">
+                    <img src="../../images/SearchLogo.png" alt="Search Icon" id="searchIcon">
+                </div>
             </div>
-            <div class="searchBox2">
-                <img src="../../images/SearchLogo.png" alt="Search Icon" id="searchIcon">
-            </div>
-        </div>
         <?php endif; ?>
 
         <div class="userAuth">
