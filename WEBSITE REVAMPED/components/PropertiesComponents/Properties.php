@@ -1,5 +1,6 @@
 <?php
-// Adjusted to use our single-encoded propertyPhoto
+// FetchProperties.php defines fetchProperties() (guarded by function_exists)
+// and then does: return fetchProperties(...);
 $properties = require __DIR__ . '/FetchProperties.php';
 ?>
 
