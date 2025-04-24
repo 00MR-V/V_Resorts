@@ -1,0 +1,15 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "type":"object",
+    "required":["Booking_ID","propertyName","customerName","Check_In_Date","Check_Out_Date","Status","Payment"],
+    "properties":{
+      "Booking_ID":{"type":"integer"},
+      "propertyName":{"type":"string"},
+      "customerName":{"type":"string"},
+      "Check_In_Date":{"type":"string","format":"date"},
+      "Check_Out_Date":{"type":"string","format":"date"},
+      "Status":{"type":"string"},
+      "Payment":{"type":"string"}
+    }
+  }
+  

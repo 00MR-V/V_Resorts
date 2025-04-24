@@ -1,0 +1,16 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "type":"array",
+    "items":{
+      "type":"object",
+      "required":["Property_ID","Name","Description","Price","propertyPhoto"],
+      "properties":{
+        "Property_ID":{"type":"integer"},
+        "Name":{"type":"string"},
+        "Description":{"type":"string"},
+        "Price":{"type":"number"},
+        "propertyPhoto":{"type":"string"}
+      }
+    }
+  }
+  

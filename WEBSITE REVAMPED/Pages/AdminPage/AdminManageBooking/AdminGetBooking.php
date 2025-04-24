@@ -1,131 +1,153 @@
 <?php
+declare(strict_types=1);
 session_start();
-require_once "../../../database/VResortsConnection.php";
+require_once __DIR__ . '/../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../database/VResortsConnection.php';
 
-
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(["error" => "Unauthorized access"]);
+if (! isset($_SESSION['user_id'])) {
+    header('Content-Type: application/json');
+    echo json_encode(['error'=>'Unauthorized']);
     exit;
 }
-$admin_id = $_SESSION['user_id'];
 
+$adminId   = (int)$_SESSION['user_id'];
+$bookingId = trim((string)($_POST['bookingId'] ?? ''));
 
-$bookingId = isset($_POST['bookingId']) ? trim($_POST['bookingId']) : null;
-if ($bookingId) {
-    $sql = "SELECT b.Booking_ID,
-                   b.Check_In_Date,
-                   b.Check_Out_Date,
-                   b.Status,
-                   p.Name AS propertyName,
-                   CONCAT(c.FName, ' ', c.LName) AS customerName,
-                   COALESCE(SUM(pm.Amount), 0) AS TotalPayment,
-                   MAX(pm.Payment_Date) AS LastPaymentDate
-            FROM booking b
-            JOIN property p ON b.Property_ID = p.Property_ID
-            JOIN customers c ON b.Customer_ID = c.Cust_Id
-            LEFT JOIN payment pm ON b.Booking_ID = pm.Booking_ID
-            WHERE b.Booking_ID = :bookingId
-              AND p.Admin_ID = :admin_id
-            GROUP BY b.Booking_ID, b.Check_In_Date, b.Check_Out_Date, b.Status, p.Name, c.FName, c.LName
-            LIMIT 1";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':bookingId', $bookingId, PDO::PARAM_INT);
-    $stmt->bindParam(':admin_id', $admin_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $booking = $stmt->fetch(PDO::FETCH_ASSOC);
+if ($bookingId !== '') {
+    $stmt = $pdo->prepare(
+        'SELECT
+            b.Booking_ID,
+            b.Check_In_Date,
+            b.Check_Out_Date,
+            b.Status,
+            p.Name AS propertyName,
+            CONCAT(c.FName," ",c.LName) AS customerName,
+            COALESCE(SUM(pm.Amount),0) AS totalPayment,
+            MAX(pm.Payment_Date) AS lastPaymentDate
+         FROM booking b
+         JOIN property p ON b.Property_ID=p.Property_ID
+         JOIN customers c ON b.Customer_ID=c.Cust_Id
+         LEFT JOIN payment pm ON b.Booking_ID=pm.Booking_ID
+         WHERE b.Booking_ID = :bid
+           AND p.Admin_ID   = :aid
+         GROUP BY b.Booking_ID
+         LIMIT 1'
+    );
+    $stmt->execute([':bid'=>(int)$bookingId,':aid'=>$adminId]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$booking) {
-        echo json_encode(["error" => "Booking not found"]);
+    if (! $row) {
+        header('Content-Type: application/json');
+        echo json_encode(['error'=>'Not found']);
         exit;
     }
 
-    $totalPayment = $booking['TotalPayment'] > 0 ? "$" . number_format($booking['TotalPayment']) : "N/A";
-    $lastPaymentDate = $booking['LastPaymentDate'] ? $booking['LastPaymentDate'] : "N/A";
-    $paymentString = "Total: " . $totalPayment . ", Last Payment: " . $lastPaymentDate;
+    $total = ((int)$row['totalPayment'] > 0)
+        ? '$'.number_format((int)$row['totalPayment'])
+        : 'N/A';
+    $last  = $row['lastPaymentDate'] ?? 'N/A';
 
-    echo json_encode([
-        "Booking_ID"    => $booking['Booking_ID'],
-        "propertyName"  => $booking['propertyName'],
-        "customerName"  => $booking['customerName'],
-        "Check_In_Date" => $booking['Check_In_Date'],
-        "Check_Out_Date"=> $booking['Check_Out_Date'],
-        "Status"        => $booking['Status'],
-        "Payment"       => $paymentString
-    ]);
+    $response = [
+        'Booking_ID'    => (int)$row['Booking_ID'],
+        'propertyName'  => $row['propertyName'],
+        'customerName'  => $row['customerName'],
+        'Check_In_Date' => $row['Check_In_Date'],
+        'Check_Out_Date'=> $row['Check_Out_Date'],
+        'Status'        => $row['Status'],
+        'Payment'       => "Total: {$total}, Last Payment: {$last}"
+    ];
+
+    $schemaFile = realpath(__DIR__ . '/../../../schemas/booking.schema.json');
+    $schema     = json_decode((string)@file_get_contents($schemaFile));
+
+    $validator = new \Opis\JsonSchema\Validator();
+    $result    = $validator->validate($response, $schema);
+
+    if (! $result->isValid()) {
+        http_response_code(500);
+        header('Content-Type: application/json');
+        echo json_encode(['error'=>'Schema validation failed']);
+        exit;
+    }
+
+    file_put_contents(
+        __DIR__ . '/../../../data/last_booking.json',
+        json_encode($response, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE)
+    );
+    header('Content-Type: application/json');
+    echo json_encode($response, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
+$search = trim((string)($_POST['search'] ?? ''));
+$sql    = 'SELECT
+            b.Booking_ID,
+            b.Check_In_Date,
+            b.Check_Out_Date,
+            b.Status,
+            p.Name AS propertyName,
+            CONCAT(c.FName," ",c.LName) AS customerName,
+            COALESCE(SUM(pm.Amount),0) AS totalPayment,
+            MAX(pm.Payment_Date) AS lastPaymentDate
+         FROM booking b
+         JOIN property p ON b.Property_ID=p.Property_ID
+         JOIN customers c ON b.Customer_ID=c.Cust_Id
+         LEFT JOIN payment pm ON b.Booking_ID=pm.Booking_ID
+         WHERE p.Admin_ID = :aid';
+$params = [':aid'=>$adminId];
 
-$search = isset($_POST['search']) ? trim($_POST['search']) : "";
-$sql = "SELECT b.Booking_ID,
-               b.Check_In_Date,
-               b.Check_Out_Date,
-               b.Status,
-               p.Name AS propertyName,
-               CONCAT(c.FName, ' ', c.LName) AS customerName,
-               COALESCE(SUM(pm.Amount), 0) AS TotalPayment,
-               MAX(pm.Payment_Date) AS LastPaymentDate
-        FROM booking b
-        JOIN property p ON b.Property_ID = p.Property_ID
-        JOIN customers c ON b.Customer_ID = c.Cust_Id
-        LEFT JOIN payment pm ON b.Booking_ID = pm.Booking_ID
-        WHERE p.Admin_ID = :admin_id";
-if (!empty($search)) {
-    $sql .= " AND (p.Name LIKE :search OR CONCAT(c.FName, ' ', c.LName) LIKE :search)";
+if ($search !== '') {
+    $sql           .= ' AND (p.Name LIKE :search OR CONCAT(c.FName," ",c.LName) LIKE :search)';
+    $params[':search'] = "%{$search}%";
 }
-$sql .= " GROUP BY b.Booking_ID, b.Check_In_Date, b.Check_Out_Date, b.Status, p.Name, c.FName, c.LName
-          ORDER BY b.Check_In_Date DESC";
+
+$sql .= ' GROUP BY b.Booking_ID
+          ORDER BY b.Check_In_Date DESC';
+
 $stmt = $pdo->prepare($sql);
-$stmt->bindParam(':admin_id', $admin_id, PDO::PARAM_INT);
-if (!empty($search)) {
-    $searchParam = "%" . $search . "%";
-    $stmt->bindParam(':search', $searchParam, PDO::PARAM_STR);
-}
-$stmt->execute();
-$bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$stmt->execute($params);
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-if (empty($bookings)) {
-    echo "<tr><td colspan='8'>No bookings found.</td></tr>";
+if (! $rows) {
+    echo '<tr><td colspan="8">No bookings found.</td></tr>';
     exit;
 }
 
-$html = "";
-foreach ($bookings as $b) {
-    $totalPayment = $b['TotalPayment'] > 0 ? "$" . number_format($b['TotalPayment']) : "N/A";
-    $lastPaymentDate = $b['LastPaymentDate'] ? htmlspecialchars($b['LastPaymentDate']) : "N/A";
-    $paymentString = $totalPayment . " on " . $lastPaymentDate;
+$html = '';
+foreach ($rows as $b) {
+    $total = ((int)$b['totalPayment'] > 0)
+        ? '$'.number_format((int)$b['totalPayment'])
+        : 'N/A';
+    $last  = $b['lastPaymentDate'] ?? 'N/A';
+    $pay   = htmlspecialchars("{$total} on {$last}", ENT_QUOTES);
 
-    $html .= "<tr>
-        <td>" . htmlspecialchars($b['Booking_ID']) . "</td>
-        <td>" . htmlspecialchars($b['propertyName']) . "</td>
-        <td>" . htmlspecialchars($b['customerName']) . "</td>
-        <td>" . htmlspecialchars($b['Check_In_Date']) . "</td>
-        <td>" . htmlspecialchars($b['Check_Out_Date']) . "</td>
-        <td>" . htmlspecialchars($b['Status']) . "</td>
-        <td>" . $paymentString . "</td>
-        <td>
-            <button class='viewBookingBtn' data-id='" . $b['Booking_ID'] . "'>View Details</button>";
-    
-   
+    $html .= '<tr>'
+           . '<td>'.htmlspecialchars((string)$b['Booking_ID'],ENT_QUOTES).'</td>'
+           . '<td>'.htmlspecialchars($b['propertyName'],ENT_QUOTES).'</td>'
+           . '<td>'.htmlspecialchars($b['customerName'],ENT_QUOTES).'</td>'
+           . '<td>'.htmlspecialchars($b['Check_In_Date'],ENT_QUOTES).'</td>'
+           . '<td>'.htmlspecialchars($b['Check_Out_Date'],ENT_QUOTES).'</td>'
+           . '<td>'.htmlspecialchars($b['Status'],ENT_QUOTES).'</td>'
+           . '<td>'.$pay.'</td>'
+           . '<td>'
+           . '<button class="viewBookingBtn" data-id="'.htmlspecialchars((string)$b['Booking_ID'],ENT_QUOTES).'">View Details</button>';
+
     switch ($b['Status']) {
         case 'Pending':
-            $html .= " <button class='updateStatusBtn' data-id='" . $b['Booking_ID'] . "' data-newstatus='Confirmed'>Confirm</button>
-                       <button class='updateStatusBtn' data-id='" . $b['Booking_ID'] . "' data-newstatus='Cancelled'>Cancel</button>";
+            $html .= ' <button class="updateStatusBtn" data-id="'.(int)$b['Booking_ID'].'" data-newstatus="Confirmed">Confirm</button>'
+                   .' <button class="updateStatusBtn" data-id="'.(int)$b['Booking_ID'].'" data-newstatus="Cancelled">Cancel</button>';
             break;
         case 'Confirmed':
-            $html .= " <button class='updateStatusBtn' data-id='" . $b['Booking_ID'] . "' data-newstatus='Completed'>Mark as Complete</button>
-                       <button class='updateStatusBtn' data-id='" . $b['Booking_ID'] . "' data-newstatus='Cancelled'>Cancel</button>";
+            $html .= ' <button class="updateStatusBtn" data-id="'.(int)$b['Booking_ID'].'" data-newstatus="Completed">Complete</button>'
+                   .' <button class="updateStatusBtn" data-id="'.(int)$b['Booking_ID'].'" data-newstatus="Cancelled">Cancel</button>';
             break;
         case 'Cancelled':
-            $html .= " <button class='updateStatusBtn' data-id='" . $b['Booking_ID'] . "' data-newstatus='Pending'>Reopen</button>";
-            break;
-        case 'Completed':
-           
+            $html .= ' <button class="updateStatusBtn" data-id="'.(int)$b['Booking_ID'].'" data-newstatus="Pending">Reopen</button>';
             break;
     }
-    
-    $html .= "</td></tr>";
+
+    $html .= '</td></tr>';
 }
+
 echo $html;
 exit;
-?>
