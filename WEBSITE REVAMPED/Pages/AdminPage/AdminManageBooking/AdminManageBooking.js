@@ -1,17 +1,19 @@
-
 $(document).ready(function () {
     console.log("Admin Manage Bookings Script Loaded");
 
-    
     fetchBookings();
 
+   
+    $("#filterForm button[type='submit']").on("click", function(e) {
+        console.log(" Filter button was clicked"); 
+    });
     
+
     $("#filterForm").on("submit", function(e) {
         e.preventDefault();
         fetchBookings();
     });
 
-    
     $(document).on("click", ".viewBookingBtn", function () {
         let bookingId = $(this).data("id");
         $.ajax({
@@ -43,12 +45,10 @@ $(document).ready(function () {
         });
     });
 
-    
     $(document).on("click", ".close-button", function () {
         $("#bookingModal").addClass("hidden");
     });
 
-  
     $(document).on("click", ".updateStatusBtn", function () {
         let bookingId = $(this).data("id");
         let newStatus = $(this).data("newstatus");
@@ -68,7 +68,6 @@ $(document).ready(function () {
         }
     });
 
-    
     function fetchBookings() {
         let searchTerm = $("input[name='search']").val();
         $.ajax({

@@ -14,7 +14,7 @@ $isSearch = ($destination !== '' || $check_in !== '' || $check_out !== '' || $gu
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>V Resorts – Properties</title>
+  <title>V Resorts Properties</title>
   <link rel="stylesheet" href="PropertiesPage.css">
 
   
